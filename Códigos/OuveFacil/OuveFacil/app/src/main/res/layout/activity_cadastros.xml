@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="domain.view.Cadastros">
+
+    <LinearLayout
+        android:layout_width="368dp"
+        android:layout_height="495dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Manutenção de Cadastros"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/buttonAdministrador"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Administrador"
+            android:onClick="cadastrarAdministrador"/>
+
+        <Button
+            android:id="@+id/buttonUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Usuário"
+            android:onClick="cadastrarUsuario"/>
+
+        <Button
+            android:id="@+id/buttonUf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="UF"
+            android:onClick="cadastrarUf"/>
+
+        <Button
+            android:id="@+id/buttonCidade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cidade"
+            android:onClick="cadastrarCidade"/>
+
+        <Button
+            android:id="@+id/buttonBairro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bairro"
+            android:onClick="cadastrarBairro"/>
+
+        <Button
+            android:id="@+id/buttonCategoria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Categoria"
+            android:onClick="cadastrarCategoria"/>
+
+        <Button
+            android:id="@+id/buttonSubCategoria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sub-Categoria"
+            android:onClick="cadastrarSubCategoria"/>
+
+        <Button
+            android:id="@+id/buttonVoltar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Voltar"
+            android:onClick="voltarTela"/>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
