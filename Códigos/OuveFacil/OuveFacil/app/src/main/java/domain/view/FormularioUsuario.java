@@ -91,7 +91,7 @@ public class FormularioUsuario extends AppCompatActivity {
         }
     }
 
-    public void listarUsuario(){
+    public void listarUsuario(View view){
         Intent IntentListarUsuario = new Intent(this, ListarUsuario.class);
 
         startActivity(IntentListarUsuario);

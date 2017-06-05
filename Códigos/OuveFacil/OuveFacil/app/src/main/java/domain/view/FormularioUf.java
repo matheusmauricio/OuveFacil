@@ -87,7 +87,7 @@ public class FormularioUf extends AppCompatActivity {
         }
     }
 
-    public void listarUf(){
+    public void listarUf(View view){
         Intent IntentListarUf = new Intent(this, ListarUf.class);
 
         startActivity(IntentListarUf);

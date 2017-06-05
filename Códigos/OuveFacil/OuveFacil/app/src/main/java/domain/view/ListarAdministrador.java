@@ -48,7 +48,7 @@ public class ListarAdministrador extends AppCompatActivity {
     private ArrayList<String> param = new ArrayList<String>();
     private Administrador administrador = new Administrador();
 
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,7 +129,7 @@ public class ListarAdministrador extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... params) {
 
-            String url = "http://192.168.1.105/OuveFacil/listarAdministrador.php";
+            String url = "http://192.168.52.4/OuveFacil/listarAdministrador.php";
 
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);

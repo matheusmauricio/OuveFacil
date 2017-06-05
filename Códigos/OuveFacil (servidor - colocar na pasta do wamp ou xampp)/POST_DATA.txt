@@ -18,3 +18,8 @@ Login: teste
 Senha: 123456
 CPF/CNPJ: 11124542345
 
+Nome: 
+Login: 
+Senha: 
+CPF/CNPJ: 
+

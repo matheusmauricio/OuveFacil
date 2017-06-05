@@ -83,7 +83,7 @@ public class FormularioAdministrador extends Activity {
 
     public void postHttp(String nome, String login, String senha, String cpfCnpj){
         HttpClient httpClient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost("http://192.168.1.105/OuveFacil/insertAdministrador.php");
+        HttpPost httpPost = new HttpPost("http://192.168.52.4/OuveFacil/insertAdministrador.php");
 
         try{
             ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
@@ -94,7 +94,7 @@ public class FormularioAdministrador extends Activity {
 
             httpPost.setEntity(new UrlEncodedFormEntity(valores));
             final HttpResponse resposta = httpClient.execute(httpPost);
-
+            Toast.makeText(FormularioAdministrador.this, "Tente novamente.", Toast.LENGTH_LONG).show();
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

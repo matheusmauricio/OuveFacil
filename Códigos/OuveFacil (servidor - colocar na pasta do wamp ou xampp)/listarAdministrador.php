@@ -5,16 +5,23 @@
   $query = "SELECT * FROM `bancoOuveFacil`.`administrador`";
   $queryExec = mysqli_query($con, $query) or die ("Erro: " .mysqli_error($con));
 
-  $linha = mysqli_fetch_object($queryExec);
+  //$linha = mysqli_fetch_object($queryExec);
 
 
-  while ($linha = mysqli_fetch_object($queryExec)) {
+  /*while ($linha = mysqli_fetch_object($queryExec)) {
         echo $linha->nome;
         echo $linha->login;
         echo $linha->senha;
         echo $linha->cpfCnpj;
   }
+*/
 
+
+while ($linha = mysqli_fetch_assoc($queryExec)) {
+      $output[] = $linha;
+}
+
+print json_encode($output);
 
 /*
   $result["errorcode"] = 0;
