@@ -11,10 +11,10 @@
         android:id="@+id/textView2" />
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/editTextNome"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 
     <LinearLayout
         android:orientation="horizontal"
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:text="Alterar"
             android:id="@+id/buttonAlterarSubCategoria"
-            android:onClick="pegarDados"/>
+            android:onClick="alterarDados"/>
 
         <Button
             android:id="@+id/buttonExcluir"
@@ -43,5 +43,11 @@
             android:layout_gravity="right"
             android:text="Voltar" />
     </LinearLayout>
+
+    <ListView
+        android:id="@+id/listViewSubCategoria"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible" />
 
 </LinearLayout>

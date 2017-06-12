@@ -23,11 +23,10 @@
         android:text="Cidade"
         android:id="@+id/textView3" />
 
-    <EditText
+    <Spinner
+        android:id="@+id/spinnerActivityCidade"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/editTextCidade"
-        />
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -40,7 +39,7 @@
             android:layout_height="wrap_content"
             android:text="Alterar"
             android:id="@+id/buttonAlterarBairro"
-            android:onClick="pegarDados"/>
+            android:onClick="alterarDados"/>
 
         <Button
             android:id="@+id/buttonExcluir"
@@ -56,5 +55,12 @@
             android:layout_gravity="right"
             android:text="Voltar" />
     </LinearLayout>
+
+    <ListView
+        android:id="@+id/listViewBairro"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible" />
+
 
 </LinearLayout>

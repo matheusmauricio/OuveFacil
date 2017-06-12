@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="domain.view.FormularioAdministrador" />
+        <activity android:name="domain.view.InserirAdministrador" />
         <activity android:name="domain.model.Administrador" />
         <activity
             android:name=".MainActivity"
@@ -23,21 +23,19 @@
             </intent-filter>
         </activity>
         <activity android:name="domain.view.Cadastros" />
-        <activity android:name="domain.view.FormularioUsuario" />
-        <activity android:name="domain.view.FormularioUf" />
-        <activity android:name="domain.view.FormularioSubCategoria" />
-        <activity android:name="domain.view.FormularioCategoria" />
+        <activity android:name="domain.view.InserirUsuario" />
+        <activity android:name="domain.view.InserirUf" />
+        <activity android:name="domain.view.InserirSubCategoria" />
+        <activity android:name="domain.view.InserirCategoria" />
         <activity android:name="domain.view.ListarAdministrador" />
-        <activity android:name="domain.view.FormularioCidade" />
+        <activity android:name="domain.view.InserirCidade" />
         <activity android:name="domain.view.ListarCidade" />
-        <activity android:name="domain.view.FormularioBairro" />
+        <activity android:name="domain.view.InserirBairro" />
         <activity android:name="domain.view.ListarBairro" />
         <activity android:name="domain.view.ListarUsuario" />
         <activity android:name="domain.view.ListarUf" />
         <activity android:name="domain.view.ListarCategoria" />
-        <activity android:name="domain.view.ListarSubCategoria"></activity>
+        <activity android:name="domain.view.ListarSubCategoria" />
     </application>
-
-
 
 </manifest>

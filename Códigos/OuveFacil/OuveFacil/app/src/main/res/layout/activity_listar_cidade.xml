@@ -23,11 +23,10 @@
         android:text="UF"
         android:id="@+id/textView3" />
 
-    <EditText
+    <Spinner
+        android:id="@+id/spinnerActivityUf"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/editTextUf"
-        />
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -39,15 +38,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Alterar"
-            android:id="@+id/buttonAlterarAdministrador"
-            android:onClick="pegarDados"/>
+            android:id="@+id/buttonAlterarCidade"
+            android:onClick="alterarDados"/>
 
         <Button
             android:id="@+id/buttonExcluir"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Excluir"
-            android:onClick="excluirUf"/>
+            android:onClick="excluirCidade"/>
 
         <Button
             android:id="@+id/buttonVoltar"
@@ -56,5 +55,12 @@
             android:layout_gravity="right"
             android:text="Voltar" />
     </LinearLayout>
+
+
+    <ListView
+        android:id="@+id/listViewCidade"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible" />
 
 </LinearLayout>

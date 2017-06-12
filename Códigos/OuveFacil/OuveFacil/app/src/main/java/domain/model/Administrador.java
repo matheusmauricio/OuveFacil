@@ -23,6 +23,13 @@ public class Administrador extends Activity{
         this.cpfCnpj = cpfCnpj;
     }
 
+    public Administrador(String nome, String login, String senha, String cpfCnpj){
+
+        this.nome = nome;
+        this.login = login;
+        this.senha = senha;
+        this.cpfCnpj = cpfCnpj;
+    }
 
     public int getCodAdministrador() {
 

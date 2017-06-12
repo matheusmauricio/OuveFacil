@@ -29,43 +29,43 @@ public class Cadastros extends AppCompatActivity {
 
 
     public void cadastrarAdministrador(View view){
-        Intent irParaTelaListaAdministrador = new Intent(this, FormularioAdministrador.class);
+        Intent irParaTelaListaAdministrador = new Intent(this, InserirAdministrador.class);
 
         startActivity(irParaTelaListaAdministrador);
     }
 
     public void cadastrarUsuario(View view){
-        Intent irParaTelaListaUsuario = new Intent(this, FormularioUsuario.class);
+        Intent irParaTelaListaUsuario = new Intent(this, InserirUsuario.class);
 
         startActivity(irParaTelaListaUsuario);
     }
 
     public void cadastrarUf(View view){
-        Intent irParaTelaListaUf = new Intent(this, FormularioUf.class);
+        Intent irParaTelaListaUf = new Intent(this, InserirUf.class);
 
         startActivity(irParaTelaListaUf);
     }
 
     public void cadastrarCidade(View view){
-        Intent irParaTelaListaCidade = new Intent(this, FormularioCidade.class);
+        Intent irParaTelaListaCidade = new Intent(this, InserirCidade.class);
 
         startActivity(irParaTelaListaCidade);
     }
 
     public void cadastrarBairro(View view){
-        Intent irParaTelaListaBairro = new Intent(this, FormularioBairro.class);
+        Intent irParaTelaListaBairro = new Intent(this, InserirBairro.class);
 
         startActivity(irParaTelaListaBairro);
     }
 
     public void cadastrarCategoria(View view){
-        Intent irParaTelaListaCategoria = new Intent(this, FormularioCategoria.class);
+        Intent irParaTelaListaCategoria = new Intent(this, InserirCategoria.class);
 
         startActivity(irParaTelaListaCategoria);
     }
 
     public void cadastrarSubCategoria(View view){
-        Intent irParaTelaListaSubCategoria = new Intent(this, FormularioSubCategoria.class);
+        Intent irParaTelaListaSubCategoria = new Intent(this, InserirSubCategoria.class);
 
         startActivity(irParaTelaListaSubCategoria);
     }

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.mm.ouvefacil.R;
@@ -25,13 +24,14 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class FormularioBairro extends AppCompatActivity {
+public class InserirUsuario extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_formulario_bairro);
-        Button buttonCancelar = (Button) findViewById(R.id.buttonCancelarBairro);
+        setContentView(R.layout.activity_formulario_usuario);
+
+        Button buttonCancelar = (Button) findViewById(R.id.buttonCancelarUsuario);
 
         buttonCancelar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
@@ -39,6 +39,7 @@ public class FormularioBairro extends AppCompatActivity {
             }
 
         });
+
     }
 
     public void enviarDados(View view){
@@ -46,9 +47,10 @@ public class FormularioBairro extends AppCompatActivity {
         new Thread(){
             public void run(){
                 EditText editNome = (EditText) findViewById(R.id.editTextNome);
-                Spinner spinnerCidade = (Spinner) findViewById(R.id.spinnerCidade);
-
-                postHttp(editNome.getText().toString(), spinnerCidade.getSelectedItem().toString());
+                EditText editLogin = (EditText) findViewById(R.id.editTextLogin);
+                EditText editSenha = (EditText) findViewById(R.id.editTextSenha);
+                EditText editCpfCnpj = (EditText) findViewById(R.id.editTextCpfCnpj);
+                postHttp(editNome.getText().toString(), editLogin.getText().toString(), editSenha.getText().toString(), editCpfCnpj.getText().toString());
             }
         }.start();
 
@@ -56,14 +58,17 @@ public class FormularioBairro extends AppCompatActivity {
 
     }
 
-    public void postHttp(String nome, String cidade){
+    public void postHttp(String nome, String login, String senha, String cpfCnpj){
         HttpClient httpClient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost("http://192.168.1.105/OuveFacil/insertBairro.php");
+        HttpPost httpPost = new HttpPost("http://192.168.1.105/OuveFacil/insertUsuario.php");
+        //HttpPost httpPost = new HttpPost("http://192.168.52.4/OuveFacil/insertUsuario.php");
 
         try{
             ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
             valores.add(new BasicNameValuePair("nome", nome));
-            valores.add(new BasicNameValuePair("codCidade", cidade));
+            valores.add(new BasicNameValuePair("login", login));
+            valores.add(new BasicNameValuePair("senha", senha));
+            valores.add(new BasicNameValuePair("cpfCnpj", cpfCnpj));
 
             httpPost.setEntity(new UrlEncodedFormEntity(valores));
             final HttpResponse resposta = httpClient.execute(httpPost);
@@ -87,11 +92,11 @@ public class FormularioBairro extends AppCompatActivity {
         }
     }
 
+    public void listarUsuario(View view){
+        Intent IntentListarUsuario = new Intent(this, ListarUsuario.class);
 
-    public void listarBairro(){
-        Intent IntentListarBairro = new Intent(this, ListarBairro.class);
-
-        startActivity(IntentListarBairro);
+        startActivity(IntentListarUsuario);
     }
+
 
 }

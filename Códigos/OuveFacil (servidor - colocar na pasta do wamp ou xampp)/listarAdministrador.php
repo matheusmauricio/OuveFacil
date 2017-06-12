@@ -19,6 +19,7 @@
 
 while ($linha = mysqli_fetch_assoc($queryExec)) {
       $output[] = $linha;
+
 }
 
 print json_encode($output);

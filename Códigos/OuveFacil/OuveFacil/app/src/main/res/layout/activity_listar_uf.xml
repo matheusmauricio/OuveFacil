@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:text="Alterar"
             android:id="@+id/buttonAlterarUf"
-            android:onClick="pegarDados"/>
+            android:onClick="alterarDados"/>
 
         <Button
             android:id="@+id/buttonExcluir"

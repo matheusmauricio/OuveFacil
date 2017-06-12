@@ -1,10 +1,12 @@
 package domain.model;
 
+import java.util.ArrayList;
+
 public class Bairro {
 
     private int codBairro;
     private String nome;
-    private Cidade cidade;
+    private ArrayList<Cidade> cidade = new ArrayList<>();
 
     public int getCodBairro() {
         return codBairro;
@@ -22,11 +24,11 @@ public class Bairro {
         this.nome = nome;
     }
 
-    public Cidade getCidade() {
+    public ArrayList<Cidade> getCidade() {
         return cidade;
     }
 
-    public void setCidade(Cidade cidade) {
+    public void setCidade(ArrayList<Cidade> cidade) {
         this.cidade = cidade;
     }
 

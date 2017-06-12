@@ -2,6 +2,7 @@ package domain.view;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.mm.ouvefacil.R;
@@ -38,66 +39,54 @@ import java.util.ArrayList;
 
 import domain.model.UF;
 
-public class ListarUf extends AppCompatActivity {
+public class InserirCidade extends AppCompatActivity {
 
-    private ArrayAdapter<String> adapter;
-    private ListView listView;
-    private EditText editNome;
-    private EditText editSigla;
+    private ArrayList<UF> arrayUf = new ArrayList<UF>();
     private String nome;
-    private String sigla;
-    private ArrayList<UF> param = new ArrayList<UF>();
-
+    private Spinner spinnerUf;
+    private String siglaUf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listar_uf);
+        setContentView(R.layout.activity_formulario_cidade);
 
+        Button buttonCancelar = (Button) findViewById(R.id.buttonCancelarCidade);
 
-        Button buttonVoltar = (Button) findViewById(R.id.buttonVoltar);
-
-        buttonVoltar.setOnClickListener(new View.OnClickListener() {
+        buttonCancelar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
                 finish();
             }
+
         });
 
-        //Toast.makeText(this, "Teste de Mensagem", Toast.LENGTH_SHORT).show();
+        spinnerUf = (Spinner) findViewById(R.id.spinnerActivityUf);
 
-        listView = (ListView) findViewById(R.id.listViewUf);
-
-        editSigla = (EditText) findViewById(R.id.editTextSigla);
-        editNome = (EditText) findViewById(R.id.editTextNome);
-
-        ListarUf.Task task = new ListarUf.Task();
+        InserirCidade.Task task = new InserirCidade.Task();
         task.execute();
 
-        listView.getSelectedItem();
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        spinnerUf.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                UF uf = new UF();
+                uf = (UF) spinnerUf.getItemAtPosition(position);
+
+                siglaUf = uf.getSigla();
+                Toast.makeText(InserirCidade.this, "Item selecionado "+ uf, Toast.LENGTH_SHORT).show();
+
+            }
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-                //usuario = (Administrador) listView.getItemAtPosition(position);
-                //usuario = adapter.getItemAtPosition(position);
-                UF uf = new UF();
-                uf = (UF) listView.getItemAtPosition(position);
-
-                Toast.makeText(ListarUf.this, "Item selecionado "+ uf, Toast.LENGTH_SHORT).show();
-
-                sigla = uf.getSigla();
-                editSigla.setText(uf.getSigla());
-                editNome.setText(uf.getNome());
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
+
     }
 
     public class Task extends AsyncTask<String, String, Void> {
 
-        private ProgressDialog progressDialog = new ProgressDialog(ListarUf.this);
+        private ProgressDialog progressDialog = new ProgressDialog(InserirCidade.this);
 
         InputStream is = null;
         String result = "";
@@ -109,7 +98,7 @@ public class ListarUf extends AppCompatActivity {
 
                 @Override
                 public void onCancel(DialogInterface dialog) {
-                    ListarUf.Task.this.cancel(true);
+                    InserirCidade.Task.this.cancel(true);
                 }
             });
         };
@@ -136,7 +125,7 @@ public class ListarUf extends AppCompatActivity {
 
             } catch (Exception e) {
                 Log.e("log_tag", "Erro ao conectar com o banco de dados " + e.toString());
-                Toast.makeText(ListarUf.this, "Tente novamente.", Toast.LENGTH_LONG).show();
+                Toast.makeText(InserirCidade.this, "Tente novamente.", Toast.LENGTH_LONG).show();
             }
 
             try
@@ -167,22 +156,18 @@ public class ListarUf extends AppCompatActivity {
                     jsonObject = Jarray.getJSONObject(i);
 
                     // output na tela
-                    //String codAdministrador = jsonObject.getString("codAdministrador");
-
-                    sigla = jsonObject.getString("sigla");
                     nome = jsonObject.getString("nome");
+                    siglaUf = jsonObject.getString("sigla");
 
                     UF uf = new UF();
-
-                    uf.setSigla(sigla);
                     uf.setNome(nome);
+                    uf.setSigla(siglaUf);
 
-                    param.add(uf);
+                    arrayUf.add(uf);
 
-                    ArrayAdapter<UF> ad = new ArrayAdapter<UF>(ListarUf.this, android.R.layout.simple_list_item_1, param);
-                    listView.setAdapter(ad);
+                    ArrayAdapter<UF> ad = new ArrayAdapter<UF>(InserirCidade.this, android.R.layout.simple_spinner_dropdown_item, arrayUf);
+                    spinnerUf.setAdapter(ad);
                 }
-
                 this.progressDialog.dismiss();
 
             } catch (Exception e) {
@@ -191,43 +176,32 @@ public class ListarUf extends AppCompatActivity {
         }
     }
 
-    public void alterarDados(View view){
+    public void enviarDados(View view){
+
         new Thread(){
             public void run(){
-
-                postHttp(editSigla.getText().toString(), editNome.getText().toString(), sigla);
+                EditText editNome = (EditText) findViewById(R.id.editTextNome);
+                Spinner spinnerUf = (Spinner) findViewById(R.id.spinnerActivityUf);
+                postHttp(editNome.getText().toString(), siglaUf);
             }
         }.start();
+
         finish();
+
     }
 
-    public void postHttp(String novaSigla, String nome, String antigaSigla){
+    public void postHttp(String nome, String siglaUf){
         HttpClient httpClient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost("http://192.168.1.105/OuveFacil/alterarUf.php");
+        HttpPost httpPost = new HttpPost("http://192.168.1.105/OuveFacil/insertCidade.php");
 
         try{
-
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                                        int position, long id) {
-
-                    UF uf = new UF();
-
-                    uf = (UF) listView.getItemAtPosition(position);
-
-                }
-            });
-
             ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
-            valores.add(new BasicNameValuePair("sigla", novaSigla));
             valores.add(new BasicNameValuePair("nome", nome));
-            valores.add(new BasicNameValuePair("antigaSigla", antigaSigla));
+            valores.add(new BasicNameValuePair("sigla", siglaUf));
 
             httpPost.setEntity(new UrlEncodedFormEntity(valores));
             final HttpResponse resposta = httpClient.execute(httpPost);
-            Toast.makeText(ListarUf.this, "Tente novamente.", Toast.LENGTH_LONG).show();
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -247,59 +221,12 @@ public class ListarUf extends AppCompatActivity {
         }
     }
 
-    public void excluirUf(View view){
-        new Thread(){
-            public void run(){
-                postHttpExcluir(sigla);
-            }
-        }.start();
 
-        finish();
+    public void listarCidade(View view){
+        Intent IntentListarCidade = new Intent(this, ListarCidade.class);
+
+        startActivity(IntentListarCidade);
     }
 
-    public void postHttpExcluir(String sigla){
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost("http://192.168.1.105/OuveFacil/excluirUf.php");
-
-        try{
-
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                                        int position, long id) {
-
-                    UF uf = new UF();
-
-                    uf = (UF) listView.getItemAtPosition(position);
-
-                }
-            });
-
-            ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
-            valores.add(new BasicNameValuePair("sigla", sigla));
-
-            httpPost.setEntity(new UrlEncodedFormEntity(valores));
-            final HttpResponse resposta = httpClient.execute(httpPost);
-            Toast.makeText(ListarUf.this, "Tente novamente.", Toast.LENGTH_LONG).show();
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    try{
-                        Toast.makeText(getBaseContext(), EntityUtils.toString(resposta.getEntity()), Toast.LENGTH_SHORT);
-                    } catch(ParseException e){
-                        e.printStackTrace();
-                    } catch(IOException e){
-                        e.printStackTrace();
-                    }
-                }
-            });
-        } catch(ClientProtocolException e){
-
-        } catch(IOException e){
-
-        }
-    }
 
 }
-

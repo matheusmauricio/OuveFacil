@@ -17,7 +17,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import domain.view.Cadastros;
-import domain.view.FormularioAdministrador;
+import domain.view.InserirAdministrador;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_denuncia) {
 
         } else if (id == R.id.nav_administrador) {
-            Intent irParaTelaListaAdministrador = new Intent(this, FormularioAdministrador.class);
+            Intent irParaTelaListaAdministrador = new Intent(this, InserirAdministrador.class);
 
             startActivity(irParaTelaListaAdministrador);
         } else if (id == R.id.nav_manage) {

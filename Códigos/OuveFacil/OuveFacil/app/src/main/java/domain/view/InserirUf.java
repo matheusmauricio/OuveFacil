@@ -1,12 +1,11 @@
 package domain.view;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.mm.ouvefacil.R;
@@ -25,17 +24,14 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class FormularioCategoria extends AppCompatActivity {
-
-    private String[] nomeSubCategoria = new String[]{ };
-
+public class InserirUf extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_formulario_categoria);
+        setContentView(R.layout.activity_formulario_uf);
 
-        Button buttonCancelar = (Button) findViewById(R.id.buttonCancelarCategoria);
+        Button buttonCancelar = (Button) findViewById(R.id.buttonCancelarUf);
 
         buttonCancelar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
@@ -50,10 +46,9 @@ public class FormularioCategoria extends AppCompatActivity {
 
         new Thread(){
             public void run(){
+                EditText editSigla = (EditText) findViewById(R.id.editTextSigla);
                 EditText editNome = (EditText) findViewById(R.id.editTextNome);
-                Spinner spinnerSubCategoria = (Spinner) findViewById(R.id.spinnerSubCategoria);
-                // PREENCHER O SPINNER E PEGAR O CÓDIGO DA SUB CATEGORIA DO SPINNER
-                postHttp(editNome.getText().toString(), spinnerSubCategoria.getSelectedItem().toString());
+                postHttp(editSigla.getText().toString(), editNome.getText().toString());
             }
         }.start();
 
@@ -61,15 +56,14 @@ public class FormularioCategoria extends AppCompatActivity {
 
     }
 
-    public void postHttp(String nome, String codSubCategoria){
+    public void postHttp(String sigla, String nome){
         HttpClient httpClient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost("http://192.168.1.105/OuveFacil/insertCatgoria.php");
+        HttpPost httpPost = new HttpPost("http://192.168.1.105/OuveFacil/insertUf.php");
 
         try{
             ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
+            valores.add(new BasicNameValuePair("sigla", sigla));
             valores.add(new BasicNameValuePair("nome", nome));
-            valores.add(new BasicNameValuePair("codSubCategoria", codSubCategoria));
-
 
             httpPost.setEntity(new UrlEncodedFormEntity(valores));
             final HttpResponse resposta = httpClient.execute(httpPost);
@@ -93,10 +87,10 @@ public class FormularioCategoria extends AppCompatActivity {
         }
     }
 
-    public void listarCategoria(){
-        Intent IntentListarCategoria = new Intent(this, ListarCategoria.class);
+    public void listarUf(View view){
+        Intent IntentListarUf = new Intent(this, ListarUf.class);
 
-        startActivity(IntentListarCategoria);
+        startActivity(IntentListarUf);
     }
 
 }

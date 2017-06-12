@@ -1,12 +1,11 @@
 package domain.view;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.mm.ouvefacil.R;
@@ -25,14 +24,14 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class FormularioCidade extends AppCompatActivity {
+public class InserirSubCategoria extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_formulario_cidade);
+        setContentView(R.layout.activity_formulario_sub_categoria);
 
-        Button buttonCancelar = (Button) findViewById(R.id.buttonCancelarCidade);
+        Button buttonCancelar = (Button) findViewById(R.id.buttonCancelarSubCategoria);
 
         buttonCancelar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
@@ -42,13 +41,13 @@ public class FormularioCidade extends AppCompatActivity {
         });
     }
 
+
     public void enviarDados(View view){
 
         new Thread(){
             public void run(){
                 EditText editNome = (EditText) findViewById(R.id.editTextNome);
-                Spinner spinnerUf = (Spinner) findViewById(R.id.spinnerUf);
-                postHttp(editNome.getText().toString(), spinnerUf.getSelectedItem().toString());
+                postHttp(editNome.getText().toString());
             }
         }.start();
 
@@ -56,14 +55,13 @@ public class FormularioCidade extends AppCompatActivity {
 
     }
 
-    public void postHttp(String nome, String uf){
+    public void postHttp(String nome){
         HttpClient httpClient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost("http://192.168.1.105/OuveFacil/insertCidade.php");
+        HttpPost httpPost = new HttpPost("http://192.168.1.105/OuveFacil/insertSubCategoria.php");
 
         try{
             ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
             valores.add(new BasicNameValuePair("nome", nome));
-            valores.add(new BasicNameValuePair("uf", uf));
 
             httpPost.setEntity(new UrlEncodedFormEntity(valores));
             final HttpResponse resposta = httpClient.execute(httpPost);
@@ -87,12 +85,10 @@ public class FormularioCidade extends AppCompatActivity {
         }
     }
 
+    public void listarSubCategoria(View view){
+        Intent IntentListarSubCategoria = new Intent(this, ListarSubCategoria.class);
 
-    public void listarCidade(){
-        Intent IntentListarCidade = new Intent(this, ListarCidade.class);
-
-        startActivity(IntentListarCidade);
+        startActivity(IntentListarSubCategoria);
     }
-
 
 }

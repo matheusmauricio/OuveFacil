@@ -1,7 +1,7 @@
 package domain.view;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,14 +24,20 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class FormularioSubCategoria extends AppCompatActivity {
+/**
+ * Created by Matheus on 16/05/2017.
+ */
+public class InserirAdministrador extends Activity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+
+
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_formulario_sub_categoria);
+        setContentView(R.layout.activity_formulario_administrador);
 
-        Button buttonCancelar = (Button) findViewById(R.id.buttonCancelarSubCategoria);
+        Button buttonCadastrar = (Button) findViewById(R.id.buttonCadastrarAdministrador);
+
+        Button buttonCancelar = (Button) findViewById(R.id.buttonCancelarAdministrador);
 
         buttonCancelar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
@@ -41,13 +47,15 @@ public class FormularioSubCategoria extends AppCompatActivity {
         });
     }
 
-
     public void enviarDados(View view){
 
         new Thread(){
             public void run(){
                 EditText editNome = (EditText) findViewById(R.id.editTextNome);
-                postHttp(editNome.getText().toString());
+                EditText editLogin = (EditText) findViewById(R.id.editTextLogin);
+                EditText editSenha = (EditText) findViewById(R.id.editTextSenha);
+                EditText editCpfCnpj = (EditText) findViewById(R.id.editTextCpfCnpj);
+                postHttp(editNome.getText().toString(), editLogin.getText().toString(), editSenha.getText().toString(), editCpfCnpj.getText().toString());
             }
         }.start();
 
@@ -55,17 +63,20 @@ public class FormularioSubCategoria extends AppCompatActivity {
 
     }
 
-    public void postHttp(String nome){
+    public void postHttp(String nome, String login, String senha, String cpfCnpj){
         HttpClient httpClient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost("http://192.168.1.105/OuveFacil/insertSubCategoria.php");
+        HttpPost httpPost = new HttpPost("http://192.168.1.105/OuveFacil/insertAdministrador.php");
 
         try{
             ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
             valores.add(new BasicNameValuePair("nome", nome));
+            valores.add(new BasicNameValuePair("login", login));
+            valores.add(new BasicNameValuePair("senha", senha));
+            valores.add(new BasicNameValuePair("cpfCnpj", cpfCnpj));
 
             httpPost.setEntity(new UrlEncodedFormEntity(valores));
             final HttpResponse resposta = httpClient.execute(httpPost);
-
+            Toast.makeText(InserirAdministrador.this, "Tente novamente.", Toast.LENGTH_LONG).show();
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -85,10 +96,11 @@ public class FormularioSubCategoria extends AppCompatActivity {
         }
     }
 
-    public void listarSubCategoria(){
-        Intent IntentListarSubCategoria = new Intent(this, ListarSubCategoria.class);
 
-        startActivity(IntentListarSubCategoria);
+    public void listarAdministrador(View view){
+        Intent IntentListarAdministrador = new Intent(this, ListarAdministrador.class);
+
+        startActivity(IntentListarAdministrador);
     }
 
 }
