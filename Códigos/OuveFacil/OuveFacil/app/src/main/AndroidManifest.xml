@@ -3,6 +3,13 @@
     package="com.mm.ouvefacil">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -10,8 +17,12 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="domain.view.InserirAdministrador" />
-        <activity android:name="domain.model.Administrador" />
+
+        <!--
+            <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        -->
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -21,21 +32,51 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+        <activity android:name="domain.controller.InserirAdministrador" />
+        <activity android:name="domain.model.Administrador" />
         <activity android:name="domain.view.Cadastros" />
-        <activity android:name="domain.view.InserirUsuario" />
-        <activity android:name="domain.view.InserirUf" />
-        <activity android:name="domain.view.InserirSubCategoria" />
-        <activity android:name="domain.view.InserirCategoria" />
-        <activity android:name="domain.view.ListarAdministrador" />
-        <activity android:name="domain.view.InserirCidade" />
-        <activity android:name="domain.view.ListarCidade" />
-        <activity android:name="domain.view.InserirBairro" />
-        <activity android:name="domain.view.ListarBairro" />
-        <activity android:name="domain.view.ListarUsuario" />
-        <activity android:name="domain.view.ListarUf" />
-        <activity android:name="domain.view.ListarCategoria" />
-        <activity android:name="domain.view.ListarSubCategoria" />
+        <activity android:name="domain.controller.InserirUsuario" />
+        <activity android:name="domain.controller.InserirUf" />
+        <activity android:name="domain.controller.InserirSubCategoria" />
+        <activity android:name="domain.controller.InserirCategoria" />
+        <activity android:name="domain.controller.ListarAdministrador" />
+        <activity android:name="domain.controller.InserirCidade" />
+        <activity android:name="domain.controller.ListarCidade" />
+        <activity android:name="domain.controller.InserirBairro" />
+        <activity android:name="domain.controller.ListarBairro" />
+        <activity android:name="domain.controller.ListarUsuario" />
+        <activity android:name="domain.controller.ListarUf" />
+        <activity android:name="domain.controller.ListarCategoria" />
+        <activity android:name="domain.controller.ListarSubCategoria" />
+        <activity android:name="domain.view.TelaLogin">
+           <!-- <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter> -->
+        </activity>
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <fragment
+            android:name="domain.fragment.Mapa"
+            android:label="Mapa" />
+        <fragment
+            android:name="domain.fragment.MapaProviderFragment"
+            android:label="ExemploProviderFragmentV1" />
+
+        <activity android:name="domain.controller.Configuracoes"></activity>
     </application>
 
 </manifest>

@@ -10,7 +10,7 @@ include_once("conexao.php");
         $cpfCnpj = $_POST['cpfCnpj'];
 
 
-        $query = "UPDATE `bancoOuveFacil`.`usuario` SET `nome` = '$nome', `login` = '$login', `senha` = md5('$senha'), `cpfCnpj` = '$cpfCnpj' WHERE `codUsuario` = '$codUsuario'";
+        $query = "UPDATE `bancoOuveFacil`.`usuario` SET `nome` = '$nome', `login` = '$login', `senha` = '$senha', `cpfCnpj` = '$cpfCnpj' WHERE `codUsuario` = '$codUsuario'";
 
         $queryExec = mysqli_query($con, $query) or die ("Erro: " .mysqli_error($con));
 

@@ -8,6 +8,14 @@ import android.widget.Button;
 
 import com.mm.ouvefacil.R;
 
+import domain.controller.InserirAdministrador;
+import domain.controller.InserirBairro;
+import domain.controller.InserirCategoria;
+import domain.controller.InserirCidade;
+import domain.controller.InserirSubCategoria;
+import domain.controller.InserirUf;
+import domain.controller.InserirUsuario;
+
 public class Cadastros extends AppCompatActivity {
 
     @Override

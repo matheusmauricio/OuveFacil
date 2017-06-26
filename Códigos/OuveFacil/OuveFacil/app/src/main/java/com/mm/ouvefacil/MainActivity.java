@@ -3,9 +3,10 @@ package com.mm.ouvefacil;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,14 +14,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
+import domain.controller.Configuracoes;
+import domain.controller.InserirAdministrador;
+import domain.fragment.MapaProviderFragment;
 import domain.view.Cadastros;
-import domain.view.InserirAdministrador;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,15 +31,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -46,6 +40,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
@@ -74,10 +69,22 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent irParaConfiguracoes = new Intent(this, Configuracoes.class);
+            startActivity(irParaConfiguracoes);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showFragment(Fragment fragment, String name){
+        fragmentManager = getSupportFragmentManager();
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        transaction.add(R.id.container, fragment, name);
+
+        transaction.commit();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -87,15 +94,19 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_mapa) {
-            // Handle the camera action
-            Toast.makeText(MainActivity.this, "Teste de Mensagem", Toast.LENGTH_SHORT).show();
+
+            showFragment(new MapaProviderFragment(), "MapaProviderFragment");
+
+        } else if (id == R.id.nav_mapaprovider) {
+            showFragment(new MapaProviderFragment(), "MapaProviderFragment");
+
 
         } else if (id == R.id.nav_denuncia) {
 
         } else if (id == R.id.nav_administrador) {
             Intent irParaTelaListaAdministrador = new Intent(this, InserirAdministrador.class);
-
             startActivity(irParaTelaListaAdministrador);
+
         } else if (id == R.id.nav_manage) {
             Intent irPaginaInternet = new Intent(Intent.ACTION_VIEW);
 
@@ -106,8 +117,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(irPaginaInternet);
         } else if (id == R.id.nav_cadastros) {
             Intent irParaTelaCadastros = new Intent(this, Cadastros.class);
-
             startActivity(irParaTelaCadastros);
+
         } else if (id == R.id.nav_send) {
 
         }
@@ -116,7 +127,5 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
 
 }
