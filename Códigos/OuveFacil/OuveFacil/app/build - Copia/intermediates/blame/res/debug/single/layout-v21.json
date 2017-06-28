@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "C:\\Users\\Matheus\\Desktop\\OuveFacil\\OuveFacil\\app\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_template_custom_big.xml",
+        "source": "C:\\Users\\Matheus\\.android\\build-cache\\3680bd92374bab3450d9592de5d8ff53a796f1f7\\output\\res\\layout-v21\\notification_template_custom_big.xml"
+    },
+    {
+        "merged": "C:\\Users\\Matheus\\Desktop\\OuveFacil\\OuveFacil\\app\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_action_tombstone.xml",
+        "source": "C:\\Users\\Matheus\\.android\\build-cache\\3680bd92374bab3450d9592de5d8ff53a796f1f7\\output\\res\\layout-v21\\notification_action_tombstone.xml"
+    },
+    {
+        "merged": "C:\\Users\\Matheus\\Desktop\\OuveFacil\\OuveFacil\\app\\build\\intermediates\\res\\merged\\debug\\layout-v21\\place_autocomplete_fragment.xml",
+        "source": "C:\\Users\\Matheus\\.android\\build-cache\\49dd3db0363a0801604d6a0dee98fef911416401\\output\\res\\layout-v21\\place_autocomplete_fragment.xml"
+    },
+    {
+        "merged": "C:\\Users\\Matheus\\Desktop\\OuveFacil\\OuveFacil\\app\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_template_icon_group.xml",
+        "source": "C:\\Users\\Matheus\\.android\\build-cache\\3680bd92374bab3450d9592de5d8ff53a796f1f7\\output\\res\\layout-v21\\notification_template_icon_group.xml"
+    },
+    {
+        "merged": "C:\\Users\\Matheus\\Desktop\\OuveFacil\\OuveFacil\\app\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_action.xml",
+        "source": "C:\\Users\\Matheus\\.android\\build-cache\\3680bd92374bab3450d9592de5d8ff53a796f1f7\\output\\res\\layout-v21\\notification_action.xml"
+    }
+]

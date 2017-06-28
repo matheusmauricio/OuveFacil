@@ -1,0 +1,7 @@
+#Sun Jun 25 22:24:16 BRT 2017
+base.0=C\:\\Users\\Matheus\\Desktop\\OuveFacil\\OuveFacil\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_36b76071cd085188c7656ede5da969d76abed421
+renamed.1=classes2.dex
+renamed.0=classes.dex
+file.1=C\:\\Users\\Matheus\\Desktop\\OuveFacil\\OuveFacil\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_575b4b6875a5928790e25910d7d940cd0eabe535\\classes.dex
+base.1=C\:\\Users\\Matheus\\Desktop\\OuveFacil\\OuveFacil\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_575b4b6875a5928790e25910d7d940cd0eabe535
+file.0=C\:\\Users\\Matheus\\Desktop\\OuveFacil\\OuveFacil\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_36b76071cd085188c7656ede5da969d76abed421\\classes.dex
