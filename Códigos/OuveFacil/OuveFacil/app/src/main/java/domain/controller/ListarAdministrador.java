@@ -96,7 +96,7 @@ public class ListarAdministrador extends AppCompatActivity {
 
                 editNome.setText(administrador.getNome());
                 editLogin.setText(administrador.getLogin());
-                editSenha.setText(administrador.getSenha());
+                editSenha.setText("");
                 editCpfCnpj.setText(administrador.getCpfCnpj());
 
             }

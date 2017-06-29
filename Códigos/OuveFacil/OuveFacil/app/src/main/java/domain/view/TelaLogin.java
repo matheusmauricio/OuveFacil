@@ -1,41 +1,31 @@
 package domain.view;
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.mm.ouvefacil.MainActivity;
 import com.mm.ouvefacil.R;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.apache.http.message.BasicNameValuePair;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import domain.controller.ConexaoHttpClient;
 import domain.controller.IpServidor;
 import domain.model.Usuario;
 
 public class TelaLogin extends AppCompatActivity {
 
-    private EditText editLogin;
-    private EditText editSenha;
+    //private EditText editLogin;
+    //private EditText editSenha;
     private IpServidor ipServidor = new IpServidor();
     private ArrayList<Usuario> param = new ArrayList<Usuario>();
     private String login;
@@ -44,48 +34,105 @@ public class TelaLogin extends AppCompatActivity {
     private String cpfCnpj;
     private boolean logado = false;
     private Usuario usuario = new Usuario();
+    private String log;
+    String result = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_login);
+
+        final EditText editLogin = (EditText) findViewById(R.id.editTextLogin);
+        final EditText editSenha = (EditText) findViewById(R.id.editTextSenha);
+
+        Button buttonLogar = (Button) findViewById(R.id.buttonLogarActivity);
+
+        buttonLogar.setOnClickListener(new OnClickListener() {      //botão de conexão online
+            @Override
+            public void onClick(View v) {
+                String urlPost = ipServidor.getIpServidor() + "/login.php"; //url de request
+                ArrayList<NameValuePair> parametrosPost = new ArrayList<NameValuePair>();
+
+                //Parametros dos Edit
+                parametrosPost.add(new BasicNameValuePair("login",editLogin.getText().toString()));
+                //parametrosPost.add(new BasicNameValuePair("senha",editSenha.getText().toString()));
+
+                String respostaRetornada = null;
+                try{
+                    respostaRetornada = ConexaoHttpClient.executaHttpPost(urlPost, parametrosPost); //
+                    String resposta = respostaRetornada.toString();
+                    resposta = resposta.replaceAll("\\s+", "");
+
+                    if(resposta.equals("1")){       //se o usuario esta cadastrado exibe a mensagem
+                        dialogo(".::Nic Sistemas::.","Seja Bem-Vindo ao Sistema.\n.::"+editLogin.getText().toString().toUpperCase()+"::.");
+                        Toast.makeText(TelaLogin.this, "Logou", Toast.LENGTH_SHORT).show();
+                        //Intent irParaMenu = new Intent(this, MainActivity.class);
+                        //startActivity(irParaMenu);
+
+
+                    }else{  //senao pede voltar a inserir o usuario
+                        dialogo(".::Nic Sistemas::.",editLogin.getText().toString()+"Não é um usuario cadastrado.\nPor favor insira os seus dados novamente.");
+                        Toast.makeText(TelaLogin.this, "Login errado", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                }catch(Exception erro){
+
+                    Toast.makeText(TelaLogin.this,"Erro.:"+erro, Toast.LENGTH_LONG);
+                }
+
+            }
+        });
+
     }
 
-    public void entrar(View view){
+    public void entrar(View view) {
+
+        //login = editLogin.getText().toString();
+        //senha = editSenha.getText().toString();
+        //TelaLogin.Task task = new TelaLogin.Task();
+        //task.execute();
+        //Toast.makeText(TelaLogin.this, usuario.getLogin(), Toast.LENGTH_SHORT).show();
+        //finish();
+
+        //isLogado();
 
 
-        editLogin = (EditText) findViewById(R.id.editTextLogin);
-        editSenha = (EditText) findViewById(R.id.editTextSenha);
-        //Toast.makeText(TelaLogin.this, "Item selecionado "+ editLogin.getText().toString() + " " + editSenha.getText().toString(), Toast.LENGTH_SHORT).show();
-        //pegarDados();
 
-        TelaLogin.Task task = new TelaLogin.Task();
-        task.execute();
+    }
 
-        if((editLogin.getText().toString() == usuario.getLogin())){
+    public void dialogo(String titulo, String texto) {  //declaração da mensagem de alerta
 
-            logado = true;
-        }
+        AlertDialog.Builder dialog = new AlertDialog.Builder(TelaLogin.this);
+        dialog.setTitle(titulo);
+        dialog.setMessage(texto);
+        dialog.setNeutralButton("OK", null);
+        dialog.show();
+    }
 
-        if(logado == true) {
-            Intent irParaMenu = new Intent(this, MainActivity.class);
-            startActivity(irParaMenu);
-        } else{
+    public void isLogado() {
+        //Toast.makeText(TelaLogin.this, param.get(0).getNome(), Toast.LENGTH_LONG).show();
 
+        for (Usuario aux : param) {
+            if (aux.getLogin() == login && aux.getLogin() != null) {
+                Intent irParaMenu = new Intent(this, MainActivity.class);
+                startActivity(irParaMenu);
+            } else {
+                Toast.makeText(TelaLogin.this, "Erro ao conectar. Tente novamente!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
-    public void sair(View view){
+    public void sair(View view) {
         finish();
     }
 
-    public void cadastrar(View view){
+    public void cadastrar(View view) {
         Intent irParaMenu = new Intent(this, MainActivity.class);
         startActivity(irParaMenu);
     }
-
-
-
+/*
     public class Task extends AsyncTask<String, String, Void> {
 
         private ProgressDialog progressDialog = new ProgressDialog(TelaLogin.this);
@@ -103,24 +150,26 @@ public class TelaLogin extends AppCompatActivity {
                     TelaLogin.Task.this.cancel(true);
                 }
             });
-        };
+        }
+
+        ;
 
         @Override
         protected Void doInBackground(String... params) {
-
-            String url = ipServidor.getIpServidor()+"/login.php";
-            //String url = "http://192.168.52.4/OuveFacil/listarUsuario.php";
-
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(url);
+            HttpPost httpPost = new HttpPost(ipServidor.getIpServidor() + "/login.php");
 
-            ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
 
+            ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
+            valores.add(new BasicNameValuePair("login", login));
+
+            //valores.add(new BasicNameValuePair("senha", senha));
+            InputStream is = null;
             try {
-                httpPost.setEntity(new UrlEncodedFormEntity(param));
+                httpPost.setEntity(new UrlEncodedFormEntity(valores));
+                final HttpResponse resposta = httpClient.execute(httpPost);
 
-                HttpResponse httpResponse = httpClient.execute(httpPost);
-                HttpEntity httpEntity = httpResponse.getEntity();
+                HttpEntity httpEntity = resposta.getEntity();
 
                 // ler o conteudo
                 is = httpEntity.getContent();
@@ -130,26 +179,25 @@ public class TelaLogin extends AppCompatActivity {
                 Toast.makeText(TelaLogin.this, "Tente novamente.", Toast.LENGTH_LONG).show();
             }
 
-            try
-            {
+            try {
                 BufferedReader br = new BufferedReader(new InputStreamReader(is));
                 StringBuilder sb = new StringBuilder();
                 String line = "";
 
-                while((line = br.readLine()) != null){
-                    sb.append(line+"\n");
+                while ((line = br.readLine()) != null) {
+                    sb.append(line + "\n");
                 }
                 is.close();
                 result = sb.toString();
-
-            }catch(Exception e){
+            } catch (Exception e) {
                 Log.e("log_tag", "Erro ao converter o resultado " + e.toString());
             }
+
             return null;
+
         }
 
-        protected void onPostExecute(Void v){
-
+        protected void onPostExecute(Void v) {
             try {
                 JSONArray Jarray = new JSONArray(result);
 
@@ -162,86 +210,24 @@ public class TelaLogin extends AppCompatActivity {
                     login = jsonObject.getString("login");
                     senha = jsonObject.getString("senha");
                     cpfCnpj = jsonObject.getString("cpfCnpj");
-                    Usuario usuario = new Usuario();
 
+                    Usuario usuario = new Usuario();
+                    usuario.setNome(nome);
                     usuario.setLogin(login);
                     usuario.setSenha(senha);
-                    usuario.setNome(nome);
                     usuario.setCpfCnpj(cpfCnpj);
+
 
                     param.add(usuario);
 
-
                 }
-
                 this.progressDialog.dismiss();
-
             } catch (Exception e) {
-                Log.e("log_tag", "Error parsing data "+e.toString());
+                Log.e("log_tag", "Error parsing data " + e.toString());
             }
-        }
 
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*public void pegarDados(){
-        new Thread(){
-            public void run(){
-                postHttp(editLogin.getText().toString(), editSenha.getText().toString());
-
-            }
-        }.start();
-
-        finish();
-
-    }
-
-    public void postHttp(String login, String senha){
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(ipServidor.getIpServidor()+"/login.php");
-
-        try{
-
-            ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
-            valores.add(new BasicNameValuePair("login", login));
-            valores.add(new BasicNameValuePair("senha", senha));
-            logado = true;
-            usuario.setLogin(login);
-            usuario.setSenha(senha);
-
-            httpPost.setEntity(new UrlEncodedFormEntity(valores));
-            final HttpResponse resposta = httpClient.execute(httpPost);
-            Toast.makeText(TelaLogin.this, "Tente novamente.", Toast.LENGTH_LONG).show();
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    try{
-                        Toast.makeText(getBaseContext(), EntityUtils.toString(resposta.getEntity()), Toast.LENGTH_SHORT);
-                    } catch(ParseException e){
-                        e.printStackTrace();
-                    } catch(IOException e){
-                        e.printStackTrace();
-                    }
-                }
-            });
-        } catch(ClientProtocolException e){
-
-        } catch(IOException e){
 
         }
-
-    }*/
-
-
+    }
+    */
 }

@@ -108,7 +108,7 @@ public class ListarDenuncia {
                 Log.e("log_tag", "Error parsing data "+e.toString());
             }
         }
-
+'
     }
 */
 }

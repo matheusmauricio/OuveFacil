@@ -11,10 +11,11 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
+        android:id="@+id/editTextSigla"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editTextSigla"
-        />
+        android:inputType="textCapCharacters"
+        android:maxLength="2" />
 
     <TextView
         android:id="@+id/textView3"
@@ -24,10 +25,10 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
+        android:id="@+id/editTextNome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editTextNome"
-        />
+        android:inputType="text" />
 
     <LinearLayout
         android:orientation="horizontal"

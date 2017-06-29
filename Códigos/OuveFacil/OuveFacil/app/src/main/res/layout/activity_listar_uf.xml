@@ -11,10 +11,11 @@
         android:id="@+id/textView2" />
 
     <EditText
+        android:id="@+id/editTextSigla"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editTextSigla"
-        />
+        android:inputType="textCapCharacters"
+        android:maxLength="2" />
 
     <TextView
         android:layout_width="wrap_content"

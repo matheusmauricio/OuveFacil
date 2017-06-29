@@ -97,6 +97,7 @@ public class InserirAdministrador extends Activity {
         }
     }
 
+
     public void listarAdministrador(View view){
         Intent IntentListarAdministrador = new Intent(this, ListarAdministrador.class);
 

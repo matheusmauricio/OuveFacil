@@ -1,6 +1,5 @@
 package domain.controller;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.mm.ouvefacil.MainActivity;
 import com.mm.ouvefacil.R;
 
 import java.util.ArrayList;
@@ -19,7 +17,7 @@ public class Configuracoes extends AppCompatActivity {
 
     private Spinner spinnerMapa;
     private ArrayList<String> arrayMapa = new ArrayList<String>();
-    private String itemEscolhido;
+    private TipoMapa tipoMapa = new TipoMapa();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,10 +34,10 @@ public class Configuracoes extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                itemEscolhido = (String) spinnerMapa.getItemAtPosition(position);
+                tipoMapa.setTipoMapa((String) spinnerMapa.getItemAtPosition(position));
 
 
-                Toast.makeText(Configuracoes.this, "Estilo de mapa selecionado: "+ itemEscolhido, Toast.LENGTH_SHORT).show();
+                Toast.makeText(Configuracoes.this, "Estilo de mapa selecionado: "+ tipoMapa.getTipoMapa(), Toast.LENGTH_SHORT).show();
 
             }
 
@@ -65,19 +63,4 @@ public class Configuracoes extends AppCompatActivity {
         arrayMapa.add("Híbrido");
     }
 
-    public void confirmar(View view){
-        finish();
-
-        Intent IntentMenu = new Intent(this, MainActivity.class);
-
-        startActivity(IntentMenu);
-    }
-
-    public String getItemEscolhido() {
-        return itemEscolhido;
-    }
-
-    public void setItemEscolhido(String itemEscolhido) {
-        this.itemEscolhido = itemEscolhido;
-    }
 }

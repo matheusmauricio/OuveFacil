@@ -22,14 +22,6 @@
         android:layout_gravity="center_horizontal">
 
         <Button
-            android:id="@+id/buttonConfirmar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:onClick="confirmar"
-            android:text="Confirmar" />
-
-        <Button
             android:id="@+id/buttonVoltar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

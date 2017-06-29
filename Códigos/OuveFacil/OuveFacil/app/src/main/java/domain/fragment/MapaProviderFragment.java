@@ -19,7 +19,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import domain.controller.Configuracoes;
+import domain.controller.TipoMapa;
 
 
 public class MapaProviderFragment extends SupportMapFragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener,
@@ -30,7 +30,7 @@ public class MapaProviderFragment extends SupportMapFragment implements OnMapRea
         private static final String TAG = "ExemploProvFragmentV1";
         private GoogleApiClient mGoogleApiClient;
         private Location location;
-        private Configuracoes configuracoes = new Configuracoes();
+        private TipoMapa tipoMapa = new TipoMapa();
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -117,11 +117,11 @@ public class MapaProviderFragment extends SupportMapFragment implements OnMapRea
 
                 //Toast.makeText(getContext(), "Estilo de mapa selecionado: "+ configuracoes.getItemEscolhido(), Toast.LENGTH_SHORT).show();
 
-                if(configuracoes.getItemEscolhido() == "Normal" || configuracoes.getItemEscolhido() == null){
+                if(tipoMapa.getTipoMapa() == "Normal" || tipoMapa.getTipoMapa() == null){
                     mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                } else if(configuracoes.getItemEscolhido() == "Satélite"){
+                } else if(tipoMapa.getTipoMapa() == "Satélite"){
                     mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-                } else if(configuracoes.getItemEscolhido() == "Híbrido"){
+                } else if(tipoMapa.getTipoMapa() == "Híbrido"){
                     mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 }
 
