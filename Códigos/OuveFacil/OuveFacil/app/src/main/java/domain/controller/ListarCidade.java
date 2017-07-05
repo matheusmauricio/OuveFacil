@@ -55,6 +55,7 @@ public class ListarCidade extends AppCompatActivity {
     private Integer codCid;
     private String siglaUf;
     private IpServidor ipServidor = new IpServidor();
+    private String aux;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +77,7 @@ public class ListarCidade extends AppCompatActivity {
         editNome = (EditText) findViewById(R.id.editTextNome);
         spinnerUf = (Spinner) findViewById(R.id.spinnerActivityUf);
 
-        ListarCidade.Task task = new ListarCidade.Task();
-        task.execute();
+
 
         ListarCidade.Task2 task2 = new ListarCidade.Task2();
         task2.execute();
@@ -97,6 +97,9 @@ public class ListarCidade extends AppCompatActivity {
                 codCid = cidade.getCodCidade();
 
                 editNome.setText(cidade.getNome());
+
+
+
             }
         });
 
@@ -106,8 +109,16 @@ public class ListarCidade extends AppCompatActivity {
                 UF uf = new UF();
                 uf = (UF) spinnerUf.getItemAtPosition(position);
 
+                aux = uf.getSigla().toString();
+
                 siglaUf = uf.getSigla();
                 Toast.makeText(ListarCidade.this, "Item selecionado "+ uf, Toast.LENGTH_SHORT).show();
+
+                param.clear();
+
+                ListarCidade.Task task = new ListarCidade.Task();
+                task.execute();
+
             }
 
             @Override
@@ -140,16 +151,16 @@ public class ListarCidade extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... params) {
 
-            String url = ipServidor.getIpServidor()+"/listarCidade.php";
+            String url = ipServidor.getIpServidor()+"/listarCidade2.php";
             //String url = "http://192.168.52.4/OuveFacil/listarCidade.php";
 
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);
 
-            ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
-
+            ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
+            valores.add(new BasicNameValuePair("uf", aux));
             try {
-                httpPost.setEntity(new UrlEncodedFormEntity(param));
+                httpPost.setEntity(new UrlEncodedFormEntity(valores));
 
                 HttpResponse httpResponse = httpClient.execute(httpPost);
                 HttpEntity httpEntity = httpResponse.getEntity();

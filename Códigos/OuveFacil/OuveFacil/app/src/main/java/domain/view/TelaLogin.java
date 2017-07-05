@@ -1,127 +1,89 @@
 package domain.view;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.mm.ouvefacil.MainActivity;
 import com.mm.ouvefacil.R;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import domain.controller.ConexaoHttpClient;
 import domain.controller.IpServidor;
+import domain.controller.Logado;
 import domain.model.Usuario;
 
 public class TelaLogin extends AppCompatActivity {
 
-    //private EditText editLogin;
-    //private EditText editSenha;
+    private EditText editLogin;
+    private EditText editSenha;
     private IpServidor ipServidor = new IpServidor();
     private ArrayList<Usuario> param = new ArrayList<Usuario>();
     private String login;
     private String senha;
     private String nome;
     private String cpfCnpj;
-    private boolean logado = false;
     private Usuario usuario = new Usuario();
     private String log;
     String result = "";
-
+    private String loginAux;
+    private Logado logado = new Logado();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_login);
 
-        final EditText editLogin = (EditText) findViewById(R.id.editTextLogin);
-        final EditText editSenha = (EditText) findViewById(R.id.editTextSenha);
-
-        Button buttonLogar = (Button) findViewById(R.id.buttonLogarActivity);
-
-        buttonLogar.setOnClickListener(new OnClickListener() {      //botão de conexão online
-            @Override
-            public void onClick(View v) {
-                String urlPost = ipServidor.getIpServidor() + "/login.php"; //url de request
-                ArrayList<NameValuePair> parametrosPost = new ArrayList<NameValuePair>();
-
-                //Parametros dos Edit
-                parametrosPost.add(new BasicNameValuePair("login",editLogin.getText().toString()));
-                //parametrosPost.add(new BasicNameValuePair("senha",editSenha.getText().toString()));
-
-                String respostaRetornada = null;
-                try{
-                    respostaRetornada = ConexaoHttpClient.executaHttpPost(urlPost, parametrosPost); //
-                    String resposta = respostaRetornada.toString();
-                    resposta = resposta.replaceAll("\\s+", "");
-
-                    if(resposta.equals("1")){       //se o usuario esta cadastrado exibe a mensagem
-                        dialogo(".::Nic Sistemas::.","Seja Bem-Vindo ao Sistema.\n.::"+editLogin.getText().toString().toUpperCase()+"::.");
-                        Toast.makeText(TelaLogin.this, "Logou", Toast.LENGTH_SHORT).show();
-                        //Intent irParaMenu = new Intent(this, MainActivity.class);
-                        //startActivity(irParaMenu);
-
-
-                    }else{  //senao pede voltar a inserir o usuario
-                        dialogo(".::Nic Sistemas::.",editLogin.getText().toString()+"Não é um usuario cadastrado.\nPor favor insira os seus dados novamente.");
-                        Toast.makeText(TelaLogin.this, "Login errado", Toast.LENGTH_SHORT).show();
-                    }
-
-
-                }catch(Exception erro){
-
-                    Toast.makeText(TelaLogin.this,"Erro.:"+erro, Toast.LENGTH_LONG);
-                }
-
-            }
-        });
+        editLogin = (EditText) findViewById(R.id.editTextLogin);
+        editSenha = (EditText) findViewById(R.id.editTextSenha);
 
     }
 
     public void entrar(View view) {
 
-        //login = editLogin.getText().toString();
-        //senha = editSenha.getText().toString();
-        //TelaLogin.Task task = new TelaLogin.Task();
-        //task.execute();
-        //Toast.makeText(TelaLogin.this, usuario.getLogin(), Toast.LENGTH_SHORT).show();
+
+        loginAux = editLogin.getText().toString();
+        TelaLogin.Task task = new TelaLogin.Task();
+        task.execute();
+        //Toast.makeText(TelaLogin.this, usuario.getNome() , Toast.LENGTH_SHORT).show();
         //finish();
 
-        //isLogado();
-
-
-
     }
 
-    public void dialogo(String titulo, String texto) {  //declaração da mensagem de alerta
-
-        AlertDialog.Builder dialog = new AlertDialog.Builder(TelaLogin.this);
-        dialog.setTitle(titulo);
-        dialog.setMessage(texto);
-        dialog.setNeutralButton("OK", null);
-        dialog.show();
-    }
 
     public void isLogado() {
         //Toast.makeText(TelaLogin.this, param.get(0).getNome(), Toast.LENGTH_LONG).show();
 
-        for (Usuario aux : param) {
-            if (aux.getLogin() == login && aux.getLogin() != null) {
+        //for (Usuario aux : param) {
+            if (logado.isEstaLogado() == true) {
+
                 Intent irParaMenu = new Intent(this, MainActivity.class);
                 startActivity(irParaMenu);
             } else {
                 Toast.makeText(TelaLogin.this, "Erro ao conectar. Tente novamente!", Toast.LENGTH_SHORT).show();
             }
-        }
+        //}
     }
 
     public void sair(View view) {
@@ -132,7 +94,7 @@ public class TelaLogin extends AppCompatActivity {
         Intent irParaMenu = new Intent(this, MainActivity.class);
         startActivity(irParaMenu);
     }
-/*
+
     public class Task extends AsyncTask<String, String, Void> {
 
         private ProgressDialog progressDialog = new ProgressDialog(TelaLogin.this);
@@ -161,7 +123,7 @@ public class TelaLogin extends AppCompatActivity {
 
 
             ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
-            valores.add(new BasicNameValuePair("login", login));
+            valores.add(new BasicNameValuePair("login", loginAux));
 
             //valores.add(new BasicNameValuePair("senha", senha));
             InputStream is = null;
@@ -217,9 +179,15 @@ public class TelaLogin extends AppCompatActivity {
                     usuario.setSenha(senha);
                     usuario.setCpfCnpj(cpfCnpj);
 
-
                     param.add(usuario);
 
+                    if(param != null){
+
+                        logado.setEstaLogado(true);
+                    }
+                    Toast.makeText(TelaLogin.this, "Bem vindo(a) " + usuario.getNome() , Toast.LENGTH_SHORT).show();
+
+                    isLogado();
                 }
                 this.progressDialog.dismiss();
             } catch (Exception e) {
@@ -229,5 +197,4 @@ public class TelaLogin extends AppCompatActivity {
 
         }
     }
-    */
 }

@@ -2,14 +2,18 @@
 
   include_once("conexao.php");
 
-  $query = "SELECT categoria.codCategoria, categoria.nome as nomeCategoria, subcategoria.nome as nomeSubCategoria FROM `bancoOuveFacil`.`categoria`, `bancoOuveFacil`.`subCategoria` WHERE categoria.codSubCategoria = subcategoria.codSubCategoria";
+  if ($_POST) {
+    $subCategoria = $_POST['subCategoria'];
 
-  $queryExec = mysqli_query($con, $query) or die ("Erro: " .mysqli_error($con));
+    $query = "SELECT categoria.codCategoria, categoria.nome as nomeCategoria, subcategoria.nome as nomeSubCategoria
+    FROM `bancoOuveFacil`.`categoria`, `bancoOuveFacil`.`subCategoria`
+    WHERE categoria.codSubCategoria = subCategoria.codSubCategoria AND subCategoria.nome = '$subCategoria' ";
 
+    $queryExec = mysqli_query($con, $query) or die ("Erro: " .mysqli_error($con));
 
-  while ($linha = mysqli_fetch_assoc($queryExec)) {
-        $output[] = $linha;
-
+    while ($linha = mysqli_fetch_assoc($queryExec)) {
+      $output[] = $linha;
+    }
   }
 
   print json_encode($output);

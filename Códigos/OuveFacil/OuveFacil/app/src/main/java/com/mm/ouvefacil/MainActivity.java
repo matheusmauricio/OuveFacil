@@ -19,6 +19,7 @@ import domain.controller.Configuracoes;
 import domain.controller.InserirAdministrador;
 import domain.fragment.MapaProviderFragment;
 import domain.view.Cadastros;
+import domain.view.Relatorios;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -119,8 +120,9 @@ public class MainActivity extends AppCompatActivity
             Intent irParaTelaCadastros = new Intent(this, Cadastros.class);
             startActivity(irParaTelaCadastros);
 
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_relatorios) {
+            Intent irParaTelaRelatorios = new Intent(this, Relatorios.class);
+            startActivity(irParaTelaRelatorios);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

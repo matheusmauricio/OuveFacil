@@ -54,6 +54,7 @@ public class ListarBairro extends AppCompatActivity {
     private Integer codBai;
     private Integer codCid;
     private IpServidor ipServidor = new IpServidor();
+    private String aux;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +76,7 @@ public class ListarBairro extends AppCompatActivity {
         editNome = (EditText) findViewById(R.id.editTextNome);
         spinnerCidade = (Spinner) findViewById(R.id.spinnerActivityCidade);
 
-        ListarBairro.Task task = new ListarBairro.Task();
-        task.execute();
+
 
         ListarBairro.Task2 task2 = new ListarBairro.Task2();
         task2.execute();
@@ -107,8 +107,15 @@ public class ListarBairro extends AppCompatActivity {
                 Cidade cidade = new Cidade();
                 cidade = (Cidade) spinnerCidade.getItemAtPosition(position);
 
+                aux = cidade.getNome().toString();
+
                 codCid = cidade.getCodCidade();
                 Toast.makeText(ListarBairro.this, "Item selecionado "+ cidade, Toast.LENGTH_SHORT).show();
+
+                param.clear();
+
+                ListarBairro.Task task = new ListarBairro.Task();
+                task.execute();
 
             }
 
@@ -142,16 +149,15 @@ public class ListarBairro extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... params) {
 
-            String url = ipServidor.getIpServidor()+"/listarBairro.php";
-            //String url = "http://192.168.52.4/OuveFacil/listarBairro.php";
+            String url = ipServidor.getIpServidor()+"/listarBairro2.php";
 
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);
 
-            ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
-
+            ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
+            valores.add(new BasicNameValuePair("cidade", aux));
             try {
-                httpPost.setEntity(new UrlEncodedFormEntity(param));
+                httpPost.setEntity(new UrlEncodedFormEntity(valores));
 
                 HttpResponse httpResponse = httpClient.execute(httpPost);
                 HttpEntity httpEntity = httpResponse.getEntity();
@@ -243,15 +249,14 @@ public class ListarBairro extends AppCompatActivity {
         protected Void doInBackground(String... params) {
 
             String url = ipServidor.getIpServidor()+"/listarCidade.php";
-            //String url = "http://192.168.52.4/OuveFacil/listarCidade.php";
 
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);
 
-            ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
+            ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
 
             try {
-                httpPost.setEntity(new UrlEncodedFormEntity(param));
+                httpPost.setEntity(new UrlEncodedFormEntity(valores));
 
                 HttpResponse httpResponse = httpClient.execute(httpPost);
                 HttpEntity httpEntity = httpResponse.getEntity();

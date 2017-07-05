@@ -54,6 +54,7 @@ public class ListarCategoria extends AppCompatActivity {
     private Integer codCat;
     private Integer codSubCat;
     private IpServidor ipServidor = new IpServidor();
+    private String aux;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +76,7 @@ public class ListarCategoria extends AppCompatActivity {
         editNome = (EditText) findViewById(R.id.editTextNome);
         spinnerSubCategoria = (Spinner) findViewById(R.id.spinnerActivitySubCategoria);
 
-        ListarCategoria.Task task = new ListarCategoria.Task();
-        task.execute();
+
 
         ListarCategoria.Task2 task2 = new ListarCategoria.Task2();
         task2.execute();
@@ -105,8 +105,15 @@ public class ListarCategoria extends AppCompatActivity {
                 SubCategoria subCategoria = new SubCategoria();
                 subCategoria = (SubCategoria) spinnerSubCategoria.getItemAtPosition(position);
 
+                aux = subCategoria.getNome().toString();
+
                 codSubCat = subCategoria.getCodSubCategoria();
                 Toast.makeText(ListarCategoria.this, "Item selecionado "+ subCategoria, Toast.LENGTH_SHORT).show();
+
+                param.clear();
+
+                ListarCategoria.Task task = new ListarCategoria.Task();
+                task.execute();
 
             }
 
@@ -141,15 +148,14 @@ public class ListarCategoria extends AppCompatActivity {
         protected Void doInBackground(String... params) {
 
             String url = ipServidor.getIpServidor()+"/listarCategoria.php";
-            //String url = "http://192.168.52.4/OuveFacil/listarCategoria.php";
 
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);
 
-            ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
-
+            ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
+            valores.add(new BasicNameValuePair("subCategoria", aux));
             try {
-                httpPost.setEntity(new UrlEncodedFormEntity(param));
+                httpPost.setEntity(new UrlEncodedFormEntity(valores));
 
                 HttpResponse httpResponse = httpClient.execute(httpPost);
                 HttpEntity httpEntity = httpResponse.getEntity();

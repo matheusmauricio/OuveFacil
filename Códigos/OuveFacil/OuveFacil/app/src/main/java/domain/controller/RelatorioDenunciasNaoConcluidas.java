@@ -3,9 +3,17 @@ package domain.controller;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import com.mm.ouvefacil.R;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -22,31 +30,54 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import domain.model.Denuncia;
+public class RelatorioDenunciasNaoConcluidas extends AppCompatActivity {
 
-/**
- * Created by Matheus on 25/06/2017.
- */
-
-public class ListarDenuncia extends AppCompatActivity {
-
+    private ListView listView;
+    private ArrayList<String> param = new ArrayList<String>();
     private IpServidor ipServidor = new IpServidor();
-    private String descricao;
-    private double latitude;
-    private double longitude;
-    private boolean anonimato;
-    private String complementoStatus;
-    private String nomeUsuario;
-    private String nomeAdministrador;
-    private String nomeBairro;
+    private Integer codDenuncia;
     private String nomeCategoria;
-    private String nomeStatus;
-    private String urlFotoVideo;
-    private ArrayList<Denuncia> param = new ArrayList<Denuncia>();
+    private String nomeBairro;
+    private String nomeCidade;
+    private String sigla;
+    private String aux;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_relatorio_denuncias_nao_concluidas);
+
+        listView = (ListView) findViewById(R.id.listViewRelatorio);
+
+        Button buttonVoltar = (Button) findViewById(R.id.buttonVoltar);
+
+        buttonVoltar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                finish();
+            }
+        });
+
+
+        RelatorioDenunciasNaoConcluidas.Task task = new RelatorioDenunciasNaoConcluidas.Task();
+        task.execute();
+
+        listView.getSelectedItem();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                aux = (String) listView.getItemAtPosition(position);
+
+                Toast.makeText(RelatorioDenunciasNaoConcluidas.this, "Denúncia selecionada "+ aux, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
 
     public class Task extends AsyncTask<String, String, Void> {
 
-        private ProgressDialog progressDialog = new ProgressDialog(ListarDenuncia.this);
+        private ProgressDialog progressDialog = new ProgressDialog(RelatorioDenunciasNaoConcluidas.this);
 
         InputStream is = null;
         String result = "";
@@ -58,7 +89,7 @@ public class ListarDenuncia extends AppCompatActivity {
 
                 @Override
                 public void onCancel(DialogInterface dialog) {
-                    ListarDenuncia.Task.this.cancel(true);
+                    RelatorioDenunciasNaoConcluidas.Task.this.cancel(true);
                 }
             });
         };
@@ -66,7 +97,7 @@ public class ListarDenuncia extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... params) {
 
-            String url = ipServidor.getIpServidor()+"/listarDenuncia.php";
+            String url = ipServidor.getIpServidor()+"/relatorioDenunciasNaoConcluidas.php";
 
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);
@@ -84,7 +115,7 @@ public class ListarDenuncia extends AppCompatActivity {
 
             } catch (Exception e) {
                 Log.e("log_tag", "Erro ao conectar com o banco de dados " + e.toString());
-                Toast.makeText(ListarDenuncia.this, "Tente novamente.", Toast.LENGTH_LONG).show();
+                Toast.makeText(RelatorioDenunciasNaoConcluidas.this, "Tente novamente.", Toast.LENGTH_LONG).show();
             }
 
             try
@@ -115,37 +146,18 @@ public class ListarDenuncia extends AppCompatActivity {
                     jsonObject = Jarray.getJSONObject(i);
 
                     // output na tela
-                    //String codAdministrador = jsonObject.getString("codAdministrador");
-
-                    descricao = jsonObject.getString("descricao");
-                    latitude = jsonObject.getDouble("latitude");
-                    longitude = jsonObject.getDouble("longitude");
-                    anonimato = jsonObject.getBoolean("anonimato");
-                    complementoStatus = jsonObject.getString("complementoStatus");
-                    nomeUsuario = jsonObject.getString("nomeUsuario");
-                    nomeAdministrador = jsonObject.getString("nomeAdministrador");
-                    nomeBairro = jsonObject.getString("nomeBairro");
+                    codDenuncia = jsonObject.getInt("codDenuncia");
                     nomeCategoria = jsonObject.getString("nomeCategoria");
-                    nomeStatus = jsonObject.getString("nomeStatus");
-                    urlFotoVideo = jsonObject.getString("urlFotoVideo");
+                    nomeBairro = jsonObject.getString("nomeBairro");
+                    nomeCidade = jsonObject.getString("nomeCidade");
+                    sigla = jsonObject.getString("sigla");
 
 
-                    Denuncia denuncia = new Denuncia();
+                    param.add("Código da Denúncia: " + codDenuncia.toString() + "\nCategoria: " + nomeCategoria +
+                            "\nBairro: " + nomeBairro + "\nCidade: " + nomeCidade + "\nUF: " + sigla);
 
-                    denuncia.setDescricao(descricao);
-                    denuncia.setLatitude(latitude);
-                    denuncia.setLongitude(longitude);
-                    denuncia.setAnonimato(anonimato);
-                    denuncia.setComplementoStatus(complementoStatus);
-                    /*denuncia.setUsuario(nomeUsuario);
-                    denuncia.setAdministrador(nomeAdministrador);
-                    denuncia.setBairro(nomeBairro);
-                    denuncia.setCategoria(nomeCategoria);
-                    denuncia.setStatus(nomeStatus);
-                    denuncia.setFotoEOuVideo(urlFotoVideo);*/
-
-                    param.add(denuncia);
-
+                    ArrayAdapter<String> ad = new ArrayAdapter<String>(RelatorioDenunciasNaoConcluidas.this, android.R.layout.simple_list_item_1, param);
+                    listView.setAdapter(ad);
                 }
 
                 this.progressDialog.dismiss();
@@ -154,7 +166,6 @@ public class ListarDenuncia extends AppCompatActivity {
                 Log.e("log_tag", "Error parsing data "+e.toString());
             }
         }
-
     }
 
 }

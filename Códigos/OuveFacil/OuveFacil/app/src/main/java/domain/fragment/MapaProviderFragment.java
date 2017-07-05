@@ -19,6 +19,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import domain.controller.ListarDenuncia;
 import domain.controller.TipoMapa;
 
 
@@ -31,6 +32,7 @@ public class MapaProviderFragment extends SupportMapFragment implements OnMapRea
         private GoogleApiClient mGoogleApiClient;
         private Location location;
         private TipoMapa tipoMapa = new TipoMapa();
+        private ListarDenuncia listarDenuncia = new ListarDenuncia();
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -140,7 +142,8 @@ public class MapaProviderFragment extends SupportMapFragment implements OnMapRea
             }
         }
 
-        //LISTENER
+
+    //LISTENER
         @Override
         public void onConnected(@Nullable Bundle bundle) {
             Log.i("LOG", "onConnected(" + bundle + ")");
