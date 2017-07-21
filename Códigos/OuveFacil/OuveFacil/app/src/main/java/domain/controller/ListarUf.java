@@ -2,6 +2,7 @@ package domain.controller;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -54,7 +55,6 @@ public class ListarUf extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar_uf);
 
-
         Button buttonVoltar = (Button) findViewById(R.id.buttonVoltar);
 
         buttonVoltar.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +63,9 @@ public class ListarUf extends AppCompatActivity {
             }
         });
 
-        //Toast.makeText(this, "Teste de Mensagem", Toast.LENGTH_SHORT).show();
+        Intent it = getIntent();
+        Integer auxxx = it.getIntExtra("Denuncia", 0);
+        Toast.makeText(this, "A" + auxxx, Toast.LENGTH_SHORT).show();
 
         listView = (ListView) findViewById(R.id.listViewUf);
 

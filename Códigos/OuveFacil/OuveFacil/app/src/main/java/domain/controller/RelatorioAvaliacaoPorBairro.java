@@ -89,9 +89,13 @@ public class RelatorioAvaliacaoPorBairro extends AppCompatActivity {
                 RelatorioAvaliacaoPorBairro.Task task = new RelatorioAvaliacaoPorBairro.Task();
                 task.execute();
 
+                Toast.makeText(RelatorioAvaliacaoPorBairro.this, "Quantidade Concluída: "+ quantConcluida.toString(), Toast.LENGTH_SHORT).show();
+
                 RelatorioAvaliacaoPorBairro.Task3 task3 = new RelatorioAvaliacaoPorBairro.Task3();
                 task3.execute();
 
+                Toast.makeText(RelatorioAvaliacaoPorBairro.this, "Quantidade Total: "+ quantTotal.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(RelatorioAvaliacaoPorBairro.this, "Param: "+ param.toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -189,8 +193,8 @@ public class RelatorioAvaliacaoPorBairro extends AppCompatActivity {
                     // output na tela
                     count = jsonObject.getInt("COUNT(*)");
 
-
-
+                    quantConcluida = count;
+                    //Toast.makeText(RelatorioAvaliacaoPorBairro.this, "Quantidade Concluída: "+ quantConcluida, Toast.LENGTH_SHORT).show();
                     //ArrayAdapter<String> ad = new ArrayAdapter<String>(RelatorioAvaliacaoPorBairro.this, android.R.layout.simple_list_item_1, param);
                     //listView.setAdapter(ad);
                 }

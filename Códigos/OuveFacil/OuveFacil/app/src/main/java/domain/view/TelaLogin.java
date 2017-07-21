@@ -48,6 +48,7 @@ public class TelaLogin extends AppCompatActivity {
     private String log;
     String result = "";
     private String loginAux;
+    private String senhaAux;
     private Logado logado = new Logado();
 
     @Override
@@ -64,6 +65,7 @@ public class TelaLogin extends AppCompatActivity {
 
 
         loginAux = editLogin.getText().toString();
+        senhaAux = editSenha.getText().toString();
         TelaLogin.Task task = new TelaLogin.Task();
         task.execute();
         //Toast.makeText(TelaLogin.this, usuario.getNome() , Toast.LENGTH_SHORT).show();
@@ -124,8 +126,8 @@ public class TelaLogin extends AppCompatActivity {
 
             ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
             valores.add(new BasicNameValuePair("login", loginAux));
+            valores.add(new BasicNameValuePair("senha", senhaAux));
 
-            //valores.add(new BasicNameValuePair("senha", senha));
             InputStream is = null;
             try {
                 httpPost.setEntity(new UrlEncodedFormEntity(valores));

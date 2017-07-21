@@ -4,8 +4,11 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.mm.ouvefacil.R;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -24,10 +27,6 @@ import java.util.ArrayList;
 
 import domain.model.Denuncia;
 
-/**
- * Created by Matheus on 25/06/2017.
- */
-
 public class ListarDenuncia extends AppCompatActivity {
 
     private IpServidor ipServidor = new IpServidor();
@@ -43,6 +42,13 @@ public class ListarDenuncia extends AppCompatActivity {
     private String nomeStatus;
     private String urlFotoVideo;
     private ArrayList<Denuncia> param = new ArrayList<Denuncia>();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_listar_denuncia);
+    }
+
 
     public class Task extends AsyncTask<String, String, Void> {
 
@@ -145,7 +151,6 @@ public class ListarDenuncia extends AppCompatActivity {
                     denuncia.setFotoEOuVideo(urlFotoVideo);*/
 
                     param.add(denuncia);
-
                 }
 
                 this.progressDialog.dismiss();
@@ -156,5 +161,6 @@ public class ListarDenuncia extends AppCompatActivity {
         }
 
     }
+
 
 }
