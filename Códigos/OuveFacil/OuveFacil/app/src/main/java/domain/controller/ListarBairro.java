@@ -2,6 +2,7 @@ package domain.controller;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -55,6 +56,7 @@ public class ListarBairro extends AppCompatActivity {
     private Integer codCid;
     private IpServidor ipServidor = new IpServidor();
     private String aux;
+    private Integer auxPosicao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,14 +71,13 @@ public class ListarBairro extends AppCompatActivity {
             }
         });
 
-        //Toast.makeText(this, "Teste de Mensagem", Toast.LENGTH_SHORT).show();
+        Intent it = getIntent();
+        auxPosicao = it.getIntExtra("Cidade", 0);
 
         listView = (ListView) findViewById(R.id.listViewBairro);
 
         editNome = (EditText) findViewById(R.id.editTextNome);
         spinnerCidade = (Spinner) findViewById(R.id.spinnerActivityCidade);
-
-
 
         ListarBairro.Task2 task2 = new ListarBairro.Task2();
         task2.execute();
@@ -310,7 +311,7 @@ public class ListarBairro extends AppCompatActivity {
 
                     ArrayAdapter<Cidade> ad = new ArrayAdapter<Cidade>(ListarBairro.this, android.R.layout.simple_spinner_dropdown_item, arrayCidade);
                     spinnerCidade.setAdapter(ad);
-
+                    spinnerCidade.setSelection(auxPosicao);
                 }
 
                 this.progressDialog.dismiss();

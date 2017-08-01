@@ -227,7 +227,7 @@ public class InserirBairro extends AppCompatActivity {
 
     public void listarBairro(View view){
         Intent IntentListarBairro = new Intent(this, ListarBairro.class);
-
+        IntentListarBairro.putExtra("Cidade", spinnerCidade.getSelectedItemPosition()); //passa a posição da cidade selecionada como parâmetro
         startActivity(IntentListarBairro);
     }
 

@@ -44,6 +44,7 @@ public class TelaLogin extends AppCompatActivity {
     private String senha;
     private String nome;
     private String cpfCnpj;
+    private Integer codUsuario;
     private Usuario usuario = new Usuario();
     private String log;
     String result = "";
@@ -174,20 +175,23 @@ public class TelaLogin extends AppCompatActivity {
                     login = jsonObject.getString("login");
                     senha = jsonObject.getString("senha");
                     cpfCnpj = jsonObject.getString("cpfCnpj");
+                    codUsuario = jsonObject.getInt("codUsuario");
 
                     Usuario usuario = new Usuario();
                     usuario.setNome(nome);
                     usuario.setLogin(login);
                     usuario.setSenha(senha);
                     usuario.setCpfCnpj(cpfCnpj);
+                    usuario.setCodUsuario(codUsuario);
 
                     param.add(usuario);
 
                     if(param != null){
 
                         logado.setEstaLogado(true);
+                        logado.setUsuario(usuario);
                     }
-                    Toast.makeText(TelaLogin.this, "Bem vindo(a) " + usuario.getNome() , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TelaLogin.this, "Bem vindo(a) " + logado.getUsuario() , Toast.LENGTH_SHORT).show();
 
                     isLogado();
                 }

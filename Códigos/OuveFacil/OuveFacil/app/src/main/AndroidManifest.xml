@@ -86,7 +86,8 @@
         <activity android:name="domain.controller.RelatorioDenunciasNaoConcluidas" />
         <activity android:name="domain.controller.RelatorioDenunciasNaoConcluidasBairro" />
         <activity android:name="domain.controller.RelatorioDenunciasConcluidasENaoConcluidas" />
-        <activity android:name="domain.controller.ListarDenuncia"></activity>
+        <activity android:name="domain.controller.ListarDenuncia" />
+        <activity android:name="domain.controller.InserirDenuncia" />
     </application>
 
 </manifest>

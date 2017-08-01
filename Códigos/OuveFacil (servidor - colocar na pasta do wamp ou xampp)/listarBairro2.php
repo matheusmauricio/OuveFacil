@@ -15,6 +15,6 @@
       $output[] = $linha;
     }
   }
-  
+
   print json_encode($output);
 ?>

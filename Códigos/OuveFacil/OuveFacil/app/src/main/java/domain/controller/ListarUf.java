@@ -63,9 +63,6 @@ public class ListarUf extends AppCompatActivity {
             }
         });
 
-        Intent it = getIntent();
-        Integer auxxx = it.getIntExtra("Denuncia", 0);
-        Toast.makeText(this, "A" + auxxx, Toast.LENGTH_SHORT).show();
 
         listView = (ListView) findViewById(R.id.listViewUf);
 
@@ -118,7 +115,6 @@ public class ListarUf extends AppCompatActivity {
         protected Void doInBackground(String... params) {
 
             String url = ipServidor.getIpServidor()+"/listarUf.php";
-            //String url = "http://192.168.52.4/OuveFacil/listarUf.php";
 
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);

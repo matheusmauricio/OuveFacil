@@ -2,12 +2,19 @@ package domain.controller;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.mm.ouvefacil.R;
 
 import org.apache.http.HttpEntity;
@@ -17,6 +24,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -26,14 +34,17 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import domain.model.Denuncia;
+import domain.model.UF;
 
 public class ListarDenuncia extends AppCompatActivity {
 
     private IpServidor ipServidor = new IpServidor();
+    private Integer codDenuncia;
     private String descricao;
     private double latitude;
     private double longitude;
     private boolean anonimato;
+    private Integer auxAnonimato;
     private String complementoStatus;
     private String nomeUsuario;
     private String nomeAdministrador;
@@ -41,12 +52,57 @@ public class ListarDenuncia extends AppCompatActivity {
     private String nomeCategoria;
     private String nomeStatus;
     private String urlFotoVideo;
-    private ArrayList<Denuncia> param = new ArrayList<Denuncia>();
+    private ArrayList<String> param = new ArrayList<String>();
+    private double auxPosicaoLat;
+    private double auxPosicaoLong;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar_denuncia);
+
+        Button buttonVoltar = (Button) findViewById(R.id.buttonVoltar);
+
+        buttonVoltar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                finish();
+            }
+        });
+
+        listView = (ListView) findViewById(R.id.listViewDenuncia);
+
+
+        Intent it = getIntent();
+        auxPosicaoLat = it.getDoubleExtra("DenunciaLat", 0);
+        auxPosicaoLong = it.getDoubleExtra("DenunciaLong", 0);
+
+        ListarDenuncia.Task task = new ListarDenuncia.Task();
+        task.execute();
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                /*Denuncia denuncia = new Denuncia();
+                denuncia = (Denuncia) listView.getItemAtPosition(position);
+
+
+                Toast.makeText(ListarDenuncia.this, "Item selecionado "+ denuncia, Toast.LENGTH_SHORT).show();*/
+
+            }
+        });
+
+    }
+
+    public void colaborarNeg(View view){
+
+    }
+
+    public void colaborarPos(View view){
+
     }
 
 
@@ -72,17 +128,20 @@ public class ListarDenuncia extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... params) {
 
-            String url = ipServidor.getIpServidor()+"/listarDenuncia.php";
+            String url = ipServidor.getIpServidor()+"/listarDenunciaCompleta.php";
 
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);
 
-            ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
+            ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
+            valores.add(new BasicNameValuePair("lat", String.valueOf(auxPosicaoLat)));
+            valores.add(new BasicNameValuePair("lng", String.valueOf(auxPosicaoLong)));
+
 
             try {
-                httpPost.setEntity(new UrlEncodedFormEntity(param));
+                httpPost.setEntity(new UrlEncodedFormEntity(valores));
+                final HttpResponse httpResponse = httpClient.execute(httpPost);
 
-                HttpResponse httpResponse = httpClient.execute(httpPost);
                 HttpEntity httpEntity = httpResponse.getEntity();
 
                 // ler o conteudo
@@ -123,10 +182,11 @@ public class ListarDenuncia extends AppCompatActivity {
                     // output na tela
                     //String codAdministrador = jsonObject.getString("codAdministrador");
 
+                    codDenuncia = jsonObject.getInt("codDenuncia");
                     descricao = jsonObject.getString("descricao");
                     latitude = jsonObject.getDouble("latitude");
                     longitude = jsonObject.getDouble("longitude");
-                    anonimato = jsonObject.getBoolean("anonimato");
+                    auxAnonimato = jsonObject.getInt("anonimato");
                     complementoStatus = jsonObject.getString("complementoStatus");
                     nomeUsuario = jsonObject.getString("nomeUsuario");
                     nomeAdministrador = jsonObject.getString("nomeAdministrador");
@@ -135,22 +195,21 @@ public class ListarDenuncia extends AppCompatActivity {
                     nomeStatus = jsonObject.getString("nomeStatus");
                     urlFotoVideo = jsonObject.getString("urlFotoVideo");
 
+                    if (auxAnonimato == 0){
+                        anonimato = false;
+                        param.add("Código da Denúncia: " + codDenuncia + "\nCategoria: " + nomeCategoria + "\nDescrição: " + descricao
+                                + "\nStatus: " + nomeStatus + "\nUsuário que criou: " + nomeUsuario + "\nAdministrador Responsável: " +
+                                nomeAdministrador + "\nObservação do Administrador: " + complementoStatus);
+                    } else{
+                        anonimato = true;
+                        param.add("Código da Denúncia: " + codDenuncia + "\nCategoria: " + nomeCategoria + "\nDescrição: " + descricao
+                                + "\nStatus: " + nomeStatus + "\nUsuário Anônimo" + "\nAdministrador Responsável: " +
+                                nomeAdministrador + "\nObservação do Administrador: " + complementoStatus);
+                    }
 
-                    Denuncia denuncia = new Denuncia();
 
-                    denuncia.setDescricao(descricao);
-                    denuncia.setLatitude(latitude);
-                    denuncia.setLongitude(longitude);
-                    denuncia.setAnonimato(anonimato);
-                    denuncia.setComplementoStatus(complementoStatus);
-                    /*denuncia.setUsuario(nomeUsuario);
-                    denuncia.setAdministrador(nomeAdministrador);
-                    denuncia.setBairro(nomeBairro);
-                    denuncia.setCategoria(nomeCategoria);
-                    denuncia.setStatus(nomeStatus);
-                    denuncia.setFotoEOuVideo(urlFotoVideo);*/
-
-                    param.add(denuncia);
+                    ArrayAdapter<String> ad = new ArrayAdapter<String>(ListarDenuncia.this, android.R.layout.simple_list_item_1, param);
+                    listView.setAdapter(ad);
                 }
 
                 this.progressDialog.dismiss();

@@ -10,18 +10,11 @@
             android:id="@+id/nav_denuncia"
             android:icon="@drawable/ic_record_voice_over_black_24dp"
             android:title="Denúncia" />
-        <item
-            android:id="@+id/nav_administrador"
-            android:title="Administrador" />
+
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
             android:title="Tools" />
-
-        <item
-            android:id="@+id/nav_mapaprovider"
-            android:icon="@drawable/ic_place_black_24dp"
-            android:title="Mapa Provider" />
 
     </group>
 

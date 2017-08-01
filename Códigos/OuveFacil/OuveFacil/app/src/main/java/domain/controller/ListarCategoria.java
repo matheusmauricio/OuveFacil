@@ -2,6 +2,7 @@ package domain.controller;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -55,6 +56,7 @@ public class ListarCategoria extends AppCompatActivity {
     private Integer codSubCat;
     private IpServidor ipServidor = new IpServidor();
     private String aux;
+    private Integer auxPosicao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +71,8 @@ public class ListarCategoria extends AppCompatActivity {
             }
         });
 
-        //Toast.makeText(this, "Teste de Mensagem", Toast.LENGTH_SHORT).show();
+        Intent it = getIntent();
+        auxPosicao = it.getIntExtra("SubCategoria", 0);
 
         listView = (ListView) findViewById(R.id.listViewCategoria);
 
@@ -312,6 +315,7 @@ public class ListarCategoria extends AppCompatActivity {
 
                     ArrayAdapter<SubCategoria> ad1 = new ArrayAdapter<SubCategoria>(ListarCategoria.this, android.R.layout.simple_spinner_dropdown_item, arraySubCategoria);
                     spinnerSubCategoria.setAdapter(ad1);
+                    spinnerSubCategoria.setSelection(auxPosicao);
 
                 }
 

@@ -16,7 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import domain.controller.Configuracoes;
-import domain.controller.InserirAdministrador;
+import domain.controller.InserirDenuncia;
 import domain.fragment.MapaProviderFragment;
 import domain.view.Cadastros;
 import domain.view.Relatorios;
@@ -95,18 +95,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_mapa) {
-
             showFragment(new MapaProviderFragment(), "MapaProviderFragment");
-
-        } else if (id == R.id.nav_mapaprovider) {
-            showFragment(new MapaProviderFragment(), "MapaProviderFragment");
-
 
         } else if (id == R.id.nav_denuncia) {
-
-        } else if (id == R.id.nav_administrador) {
-            Intent irParaTelaListaAdministrador = new Intent(this, InserirAdministrador.class);
-            startActivity(irParaTelaListaAdministrador);
+            Intent irParaTelaInserirDenuncia = new Intent(this, InserirDenuncia.class);
+            startActivity(irParaTelaInserirDenuncia);
 
         } else if (id == R.id.nav_manage) {
             Intent irPaginaInternet = new Intent(Intent.ACTION_VIEW);

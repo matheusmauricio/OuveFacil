@@ -44,7 +44,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import domain.controller.IpServidor;
+import domain.controller.ListarDenuncia;
 import domain.controller.ListarUf;
+import domain.controller.Logado;
 import domain.controller.TipoMapa;
 import domain.model.Administrador;
 import domain.model.Bairro;
@@ -71,6 +73,7 @@ public class MapaProviderFragment extends SupportMapFragment implements OnMapRea
     private double latitude;
     private double longitude;
     private boolean anonimato;
+    private Integer auxAnonimato;
     private String complementoStatus;
     private String nomeUsuario;
     private String nomeAdministrador;
@@ -79,6 +82,8 @@ public class MapaProviderFragment extends SupportMapFragment implements OnMapRea
     private String nomeStatus;
     private String urlFotoVideo;
     public static ArrayList<Denuncia> param = new ArrayList<Denuncia>();
+    public static double auxCodDenuncia;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,7 +112,7 @@ public class MapaProviderFragment extends SupportMapFragment implements OnMapRea
         //Toast.makeText(getContext(), "A", Toast.LENGTH_SHORT).show();
 
         carregarInformacoes(googleMap);
-
+        
     }
 
     @Override
@@ -137,13 +142,10 @@ public class MapaProviderFragment extends SupportMapFragment implements OnMapRea
             mMap = googleMap;
             mMap.getUiSettings().setZoomControlsEnabled(true); //botão pra aumentar ou diminuir o zoom que fica no canto inferior direito
             mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setCompassEnabled(true); //habilita a bússola (fica visível somente quando muda a direção do mapa)
 
-            //location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-
-            for (final Denuncia denuncia : param){
-                //Toast.makeText(getContext(), "Foiasas" + denuncia.getLatitude(), Toast.LENGTH_SHORT).show();
-
+            for (Denuncia denuncia : param){
                 //Toast.makeText(getContext(), "Foi" + denuncia.getLatitude(), Toast.LENGTH_SHORT).show();
 
                 //LatLng sydney = new LatLng(-20.831404, -41.174105);
@@ -154,7 +156,6 @@ public class MapaProviderFragment extends SupportMapFragment implements OnMapRea
                 marker.position(coordenada);
                 marker.title(denuncia.getCategoria().toString()); // nome do marcador
                 marker.snippet(denuncia.getDescricao()); //descrição do marcador
-
 
                 //muda a cor do marcador de acordo com a situação do status
                 if(Objects.equals(denuncia.getStatus().getNome(), "Nao Concluida")){
@@ -169,20 +170,23 @@ public class MapaProviderFragment extends SupportMapFragment implements OnMapRea
                     marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
                 }
 
-                mMap.addMarker(marker);
+                auxCodDenuncia = denuncia.getLatitude();
 
 
                 //Abre uma nova intent quando clica no balão de informações do marcador
                 mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                     @Override
                     public void onInfoWindowClick(Marker marker) {
-                        Intent irParaTelaDenunciaCompleta = new Intent(getContext(), ListarUf.class); // ele só ta passando o código da última denuncia
-                        irParaTelaDenunciaCompleta.putExtra("Denuncia", denuncia.getCodDenuncia()); //passa o código da denúncia como parâmetro
+
+                        Intent irParaTelaDenunciaCompleta = new Intent(getContext(), ListarDenuncia.class); // ele só ta passando o código da última denuncia
+                        //Toast.makeText(getContext(), "" + marker.getPosition().latitude, Toast.LENGTH_SHORT).show();
+                        irParaTelaDenunciaCompleta.putExtra("DenunciaLat", marker.getPosition().latitude); //passa o código da denúncia como parâmetro
+                        irParaTelaDenunciaCompleta.putExtra("DenunciaLong", marker.getPosition().longitude); //passa o código da denúncia como parâmetro
                         startActivity(irParaTelaDenunciaCompleta);
                     }
                 });
+                mMap.addMarker(marker);
 
-                //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
             }
 
         }catch(SecurityException ex){
@@ -335,7 +339,7 @@ public class MapaProviderFragment extends SupportMapFragment implements OnMapRea
                     descricao = jsonObject.getString("descricao");
                     latitude = jsonObject.getDouble("latitude");
                     longitude = jsonObject.getDouble("longitude");
-                    //anonimato = jsonObject.getBoolean("anonimato");
+                    //auxAnonimato = jsonObject.getInt("anonimato");
                     complementoStatus = jsonObject.getString("complementoStatus");
                     nomeUsuario = jsonObject.getString("nomeUsuario");
                     nomeAdministrador = jsonObject.getString("nomeAdministrador");
@@ -368,7 +372,6 @@ public class MapaProviderFragment extends SupportMapFragment implements OnMapRea
                     denuncia.setDescricao(descricao);
                     denuncia.setLatitude(latitude);
                     denuncia.setLongitude(longitude);
-                    //denuncia.setAnonimato(anonimato);
                     denuncia.setComplementoStatus(complementoStatus);
                     denuncia.setUsuario(usuario);
                     denuncia.setAdministrador(administrador);
@@ -376,6 +379,14 @@ public class MapaProviderFragment extends SupportMapFragment implements OnMapRea
                     denuncia.setCategoria(categoria);
                     denuncia.setStatus(status);
                     //denuncia.setFotoEOuVideo(fotoEOuVideo);
+
+                    /*if (auxAnonimato == 1){
+                        anonimato = true;
+                    } else{
+                        anonimato = false;
+                    }
+
+                    denuncia.setAnonimato(anonimato);*/
 
                     param.add(denuncia);
 

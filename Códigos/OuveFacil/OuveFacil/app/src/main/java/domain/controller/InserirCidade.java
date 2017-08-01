@@ -225,7 +225,7 @@ public class InserirCidade extends AppCompatActivity {
 
     public void listarCidade(View view){
         Intent IntentListarCidade = new Intent(this, ListarCidade.class);
-
+        IntentListarCidade.putExtra("Uf", spinnerUf.getSelectedItemPosition()); //passa a posição da uf selecionada como parâmetro
         startActivity(IntentListarCidade);
     }
 

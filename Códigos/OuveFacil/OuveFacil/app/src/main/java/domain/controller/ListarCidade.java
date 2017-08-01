@@ -2,6 +2,7 @@ package domain.controller;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -56,6 +57,7 @@ public class ListarCidade extends AppCompatActivity {
     private String siglaUf;
     private IpServidor ipServidor = new IpServidor();
     private String aux;
+    private Integer auxPosicao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +72,8 @@ public class ListarCidade extends AppCompatActivity {
             }
         });
 
-        //Toast.makeText(this, "Teste de Mensagem", Toast.LENGTH_SHORT).show();
+        Intent it = getIntent();
+        auxPosicao = it.getIntExtra("Uf", 0);
 
         listView = (ListView) findViewById(R.id.listViewCidade);
 
@@ -315,6 +318,7 @@ public class ListarCidade extends AppCompatActivity {
 
                     ArrayAdapter<UF> ad = new ArrayAdapter<UF>(ListarCidade.this, android.R.layout.simple_spinner_dropdown_item, arrayUf);
                     spinnerUf.setAdapter(ad);
+                    spinnerUf.setSelection(auxPosicao);
 
                 }
                 this.progressDialog.dismiss();

@@ -228,7 +228,7 @@ public class InserirCategoria extends AppCompatActivity {
 
     public void listarCategoria(View view){
         Intent IntentListarCategoria = new Intent(this, ListarCategoria.class);
-
+        IntentListarCategoria.putExtra("SubCategoria", spinnerSubCategoria.getSelectedItemPosition()); //passa a posição da subcategoria selecionada como parâmetro
         startActivity(IntentListarCategoria);
     }
 
