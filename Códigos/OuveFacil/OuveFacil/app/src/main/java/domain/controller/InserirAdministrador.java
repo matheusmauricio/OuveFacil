@@ -60,6 +60,7 @@ public class InserirAdministrador extends Activity {
         }.start();
 
         finish();
+        Toast.makeText(this, "Administrador Inserido", Toast.LENGTH_SHORT).show();
 
     }
 

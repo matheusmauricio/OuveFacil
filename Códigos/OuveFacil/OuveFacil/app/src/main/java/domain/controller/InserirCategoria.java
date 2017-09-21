@@ -191,6 +191,7 @@ public class InserirCategoria extends AppCompatActivity {
         }.start();
 
         finish();
+        Toast.makeText(this, "Categoria Inserida", Toast.LENGTH_SHORT).show();
 
     }
 

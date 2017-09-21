@@ -54,6 +54,7 @@ public class InserirSubCategoria extends AppCompatActivity {
         }.start();
 
         finish();
+        Toast.makeText(this, "Sub-categoria Inserida", Toast.LENGTH_SHORT).show();
 
     }
 

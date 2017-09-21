@@ -155,7 +155,6 @@ public class ListarCidade extends AppCompatActivity {
         protected Void doInBackground(String... params) {
 
             String url = ipServidor.getIpServidor()+"/listarCidade2.php";
-            //String url = "http://192.168.52.4/OuveFacil/listarCidade.php";
 
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);
@@ -199,8 +198,6 @@ public class ListarCidade extends AppCompatActivity {
             try {
                 JSONArray Jarray = new JSONArray(result);
 
-
-
                 for (int i = 0; i < Jarray.length(); i++) {
                     JSONObject jsonObject = null;
                     jsonObject = Jarray.getJSONObject(i);
@@ -216,14 +213,11 @@ public class ListarCidade extends AppCompatActivity {
                     cidade.setNome(nome);
                     cidade.setUf(arrayUf);
 
-                    //arraySubCategoria.add(subCategoria);
                     param.add(cidade);
 
                     ArrayAdapter<Cidade> ad = new ArrayAdapter<Cidade>(ListarCidade.this, android.R.layout.simple_list_item_1, param);
                     listView.setAdapter(ad);
 
-                    //ArrayAdapter<SubCategoria> ad1 = new ArrayAdapter<SubCategoria>(ListarCidade.this, android.R.layout.simple_spinner_dropdown_item, arraySubCategoria);
-                    //spinnerSubCategoria.setAdapter(ad1);
                 }
                 this.progressDialog.dismiss();
 
@@ -231,7 +225,6 @@ public class ListarCidade extends AppCompatActivity {
                 Log.e("log_tag", "Error parsing data "+e.toString());
             }
         }
-
     }
 
     public class Task2 extends AsyncTask<String, String, Void> {
@@ -257,7 +250,6 @@ public class ListarCidade extends AppCompatActivity {
         protected Void doInBackground(String... params) {
 
             String url = ipServidor.getIpServidor()+"/listarUf.php";
-            //String url = "http://192.168.52.4/OuveFacil/listarUf.php";
 
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);
@@ -357,7 +349,6 @@ public class ListarCidade extends AppCompatActivity {
                     UF uf = new UF();
                     uf = (UF) spinnerUf.getItemAtPosition(position);
 
-                    // Toast.makeText(ListarAdministrador.this, "Item selecionado "+ administrador, Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -368,7 +359,7 @@ public class ListarCidade extends AppCompatActivity {
 
             httpPost.setEntity(new UrlEncodedFormEntity(valores));
             final HttpResponse resposta = httpClient.execute(httpPost);
-            Toast.makeText(ListarCidade.this, "Tente novamente.", Toast.LENGTH_LONG).show();
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -422,7 +413,7 @@ public class ListarCidade extends AppCompatActivity {
 
             httpPost.setEntity(new UrlEncodedFormEntity(valores));
             final HttpResponse resposta = httpClient.execute(httpPost);
-            Toast.makeText(ListarCidade.this, "Tente novamente.", Toast.LENGTH_LONG).show();
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

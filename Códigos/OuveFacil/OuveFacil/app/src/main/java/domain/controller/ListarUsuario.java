@@ -68,8 +68,6 @@ public class ListarUsuario extends AppCompatActivity {
             }
         });
 
-        //Toast.makeText(this, "Teste de Mensagem", Toast.LENGTH_SHORT).show();
-
         listView = (ListView) findViewById(R.id.listViewUsuario);
 
         editNome = (EditText) findViewById(R.id.editTextNome);
@@ -87,7 +85,6 @@ public class ListarUsuario extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-
 
                 Usuario usuario = new Usuario();
                 usuario = (Usuario) listView.getItemAtPosition(position);
@@ -128,7 +125,6 @@ public class ListarUsuario extends AppCompatActivity {
         protected Void doInBackground(String... params) {
 
             String url = ipServidor.getIpServidor()+"/listarUsuario.php";
-            //String url = "http://192.168.52.4/OuveFacil/listarUsuario.php";
 
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);
@@ -177,7 +173,6 @@ public class ListarUsuario extends AppCompatActivity {
                     jsonObject = Jarray.getJSONObject(i);
 
                     // output na tela
-                    //String codAdministrador = jsonObject.getString("codAdministrador");
                     codUsu = jsonObject.getInt("codUsuario");
                     nome = jsonObject.getString("nome");
                     login = jsonObject.getString("login");
@@ -279,7 +274,7 @@ public class ListarUsuario extends AppCompatActivity {
                     Usuario usuario = new Usuario();
 
                     usuario = (Usuario) listView.getItemAtPosition(position);
-                    // Toast.makeText(ListarAdministrador.this, "Item selecionado "+ administrador, Toast.LENGTH_SHORT).show();
+
                 }
             });
 
@@ -293,7 +288,7 @@ public class ListarUsuario extends AppCompatActivity {
 
             httpPost.setEntity(new UrlEncodedFormEntity(valores));
             final HttpResponse resposta = httpClient.execute(httpPost);
-            Toast.makeText(ListarUsuario.this, "Tente novamente.", Toast.LENGTH_LONG).show();
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -347,7 +342,7 @@ public class ListarUsuario extends AppCompatActivity {
 
             httpPost.setEntity(new UrlEncodedFormEntity(valores));
             final HttpResponse resposta = httpClient.execute(httpPost);
-            Toast.makeText(ListarUsuario.this, "Tente novamente.", Toast.LENGTH_LONG).show();
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

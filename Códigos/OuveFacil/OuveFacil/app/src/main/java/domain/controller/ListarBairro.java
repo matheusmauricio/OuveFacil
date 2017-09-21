@@ -361,7 +361,7 @@ public class ListarBairro extends AppCompatActivity {
 
             httpPost.setEntity(new UrlEncodedFormEntity(valores));
             final HttpResponse resposta = httpClient.execute(httpPost);
-            Toast.makeText(ListarBairro.this, "Tente novamente.", Toast.LENGTH_LONG).show();
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -415,7 +415,7 @@ public class ListarBairro extends AppCompatActivity {
 
             httpPost.setEntity(new UrlEncodedFormEntity(valores));
             final HttpResponse resposta = httpClient.execute(httpPost);
-            Toast.makeText(ListarBairro.this, "Tente novamente.", Toast.LENGTH_LONG).show();
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

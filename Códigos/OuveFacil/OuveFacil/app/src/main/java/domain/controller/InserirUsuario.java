@@ -57,6 +57,7 @@ public class InserirUsuario extends AppCompatActivity {
         }.start();
 
         finish();
+        Toast.makeText(this, "Usuário Inserido", Toast.LENGTH_SHORT).show();
 
     }
 

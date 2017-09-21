@@ -7,6 +7,7 @@ package domain.controller;
 public class IpServidor {
 
     private final String ipServidor = "http://192.168.1.105/OuveFacil";
+    //private final String ipServidor = "http://192.168.52.159/OuveFacil";
     //private final String ipServidor = "http://192.168.52.4/OuveFacil";
     //private final String ipServidor = "http://192.168.15.5/OuveFacil";
 

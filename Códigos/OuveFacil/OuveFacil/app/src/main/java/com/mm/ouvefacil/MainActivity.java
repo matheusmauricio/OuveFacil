@@ -1,6 +1,8 @@
 package com.mm.ouvefacil;
 
+import android.*;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -17,6 +19,7 @@ import android.view.MenuItem;
 
 import domain.controller.Configuracoes;
 import domain.controller.InserirDenuncia;
+import domain.controller.MinhasDenuncias;
 import domain.fragment.MapaProviderFragment;
 import domain.view.Cadastros;
 import domain.view.Relatorios;
@@ -25,6 +28,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private FragmentManager fragmentManager;
+    private static int auxPermissao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +92,24 @@ public class MainActivity extends AppCompatActivity
         transaction.commit();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 200: {
+                if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // executa alguma ação quando o usuário clica em dar a permissão
+                    if(auxPermissao == 1){
+                        showFragment(new MapaProviderFragment(), "MapaProviderFragment");
+                    } else{
+                        Intent irParaTelaInserirDenuncia = new Intent(this, InserirDenuncia.class);
+                        startActivity(irParaTelaInserirDenuncia);
+                    }
+
+                }
+            }
+        }
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -95,11 +117,36 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_mapa) {
-            showFragment(new MapaProviderFragment(), "MapaProviderFragment");
+            boolean permissionGranted = android.support.v4.app.ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+
+            if(permissionGranted) {
+                showFragment(new MapaProviderFragment(), "MapaProviderFragment");
+            } else {
+                auxPermissao = 1;
+                android.support.v4.app.ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+            }
 
         } else if (id == R.id.nav_denuncia) {
-            Intent irParaTelaInserirDenuncia = new Intent(this, InserirDenuncia.class);
-            startActivity(irParaTelaInserirDenuncia);
+            boolean permissionGranted = android.support.v4.app.ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+
+            if(permissionGranted) {
+                Intent irParaTelaInserirDenuncia = new Intent(this, InserirDenuncia.class);
+                startActivity(irParaTelaInserirDenuncia);
+            } else {
+                auxPermissao = 2;
+                android.support.v4.app.ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+            }
+
+        } else if (id == R.id.nav_minhas_denuncias) {
+            boolean permissionGranted = android.support.v4.app.ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+
+            if(permissionGranted) {
+                Intent irParaTelaMinhasDenuncias = new Intent(this, MinhasDenuncias.class);
+                startActivity(irParaTelaMinhasDenuncias);
+            } else {
+                auxPermissao = 2;
+                android.support.v4.app.ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+            }
 
         } else if (id == R.id.nav_manage) {
             Intent irPaginaInternet = new Intent(Intent.ACTION_VIEW);

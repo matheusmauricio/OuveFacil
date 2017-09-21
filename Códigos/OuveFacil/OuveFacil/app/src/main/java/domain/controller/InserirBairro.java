@@ -190,6 +190,7 @@ public class InserirBairro extends AppCompatActivity {
         }.start();
 
         finish();
+        Toast.makeText(this, "Bairro Inserido", Toast.LENGTH_SHORT).show();
 
     }
 

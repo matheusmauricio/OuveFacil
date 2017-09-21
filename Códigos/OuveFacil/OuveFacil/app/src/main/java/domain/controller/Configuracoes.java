@@ -1,5 +1,7 @@
 package domain.controller;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -17,13 +19,17 @@ public class Configuracoes extends AppCompatActivity {
 
     private Spinner spinnerMapa;
     private ArrayList<String> arrayMapa = new ArrayList<String>();
-    private TipoMapa tipoMapa = new TipoMapa();
+    //public static final TipoMapa tipoMapa = new TipoMapa();
+    private SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuracoes);
 
         spinnerMapa = (Spinner) findViewById(R.id.spinnerTipoMapa);
+
+        sharedPreferences = this.getSharedPreferences(getString(R.string.tipoMapa), Context.MODE_PRIVATE);
 
         estilosDeMapa();
 
@@ -34,10 +40,13 @@ public class Configuracoes extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                tipoMapa.setTipoMapa((String) spinnerMapa.getItemAtPosition(position));
+                //tipoMapa.setTipoMapa((String) spinnerMapa.getItemAtPosition(position));
 
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(getString(R.string.tipoMapa), (String) spinnerMapa.getItemAtPosition(position));
+                editor.commit();
 
-                Toast.makeText(Configuracoes.this, "Estilo de mapa selecionado: "+ tipoMapa.getTipoMapa(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(Configuracoes.this, "Estilo de mapa selecionado: "+ tipoMapa.getTipoMapa(), Toast.LENGTH_SHORT).show();
 
             }
 

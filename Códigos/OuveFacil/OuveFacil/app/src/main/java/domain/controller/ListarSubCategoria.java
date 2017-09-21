@@ -59,15 +59,12 @@ public class ListarSubCategoria extends AppCompatActivity {
             }
         });
 
-        //Toast.makeText(this, "Teste de Mensagem", Toast.LENGTH_SHORT).show();
-
         listView = (ListView) findViewById(R.id.listViewSubCategoria);
 
         editNome = (EditText) findViewById(R.id.editTextNome);
 
         ListarSubCategoria.Task task = new ListarSubCategoria.Task();
         task.execute();
-
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -111,7 +108,6 @@ public class ListarSubCategoria extends AppCompatActivity {
         protected Void doInBackground(String... params) {
 
             String url = ipServidor.getIpServidor()+"/listarSubCategoria.php";
-            //String url = "http://192.168.52.4/OuveFacil/listarSubCategoria.php";
 
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);
@@ -210,7 +206,6 @@ public class ListarSubCategoria extends AppCompatActivity {
                     SubCategoria subCategoria = new SubCategoria();
 
                     subCategoria = (SubCategoria) listView.getItemAtPosition(position);
-                    // Toast.makeText(ListarAdministrador.this, "Item selecionado "+ administrador, Toast.LENGTH_SHORT).show();
 
                 }
             });
@@ -222,7 +217,7 @@ public class ListarSubCategoria extends AppCompatActivity {
 
             httpPost.setEntity(new UrlEncodedFormEntity(valores));
             final HttpResponse resposta = httpClient.execute(httpPost);
-            Toast.makeText(ListarSubCategoria.this, "Tente novamente.", Toast.LENGTH_LONG).show();
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -276,7 +271,7 @@ public class ListarSubCategoria extends AppCompatActivity {
 
             httpPost.setEntity(new UrlEncodedFormEntity(valores));
             final HttpResponse resposta = httpClient.execute(httpPost);
-            Toast.makeText(ListarSubCategoria.this, "Tente novamente.", Toast.LENGTH_LONG).show();
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

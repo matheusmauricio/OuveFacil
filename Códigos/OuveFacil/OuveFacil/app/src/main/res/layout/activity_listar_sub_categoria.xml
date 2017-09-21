@@ -3,52 +3,63 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Nome"
-        android:id="@+id/textView2" />
-
-    <EditText
-        android:id="@+id/editTextNome"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text" />
+        android:layout_height="wrap_content">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nome"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Alterar"
-            android:id="@+id/buttonAlterarSubCategoria"
-            android:onClick="alterarDados"/>
+            <EditText
+                android:id="@+id/editTextNome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
 
-        <Button
-            android:id="@+id/buttonExcluir"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Excluir"
-            android:onClick="excluirSubCategoria"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/buttonVoltar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="Voltar" />
-    </LinearLayout>
+                <Button
+                    android:id="@+id/buttonAlterarSubCategoria"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="alterarDados"
+                    android:text="Alterar" />
+
+                <Button
+                    android:id="@+id/buttonExcluir"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="excluirSubCategoria"
+                    android:text="Excluir" />
+
+                <Button
+                    android:id="@+id/buttonVoltar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="Voltar" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
 
     <ListView
         android:id="@+id/listViewSubCategoria"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:visibility="visible" />
 
 </LinearLayout>

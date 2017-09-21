@@ -188,6 +188,7 @@ public class InserirCidade extends AppCompatActivity {
         }.start();
 
         finish();
+        Toast.makeText(this, "Cidade Inserida", Toast.LENGTH_SHORT).show();
 
     }
 

@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -27,6 +29,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
 
             <!--
@@ -45,15 +48,36 @@
         <activity android:name="domain.controller.InserirUf" />
         <activity android:name="domain.controller.InserirSubCategoria" />
         <activity android:name="domain.controller.InserirCategoria" />
-        <activity android:name="domain.controller.ListarAdministrador" />
+        <activity
+            android:name="domain.controller.ListarAdministrador"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
         <activity android:name="domain.controller.InserirCidade" />
-        <activity android:name="domain.controller.ListarCidade" />
+        <activity
+            android:name="domain.controller.ListarCidade"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
         <activity android:name="domain.controller.InserirBairro" />
-        <activity android:name="domain.controller.ListarBairro" />
-        <activity android:name="domain.controller.ListarUsuario" />
-        <activity android:name="domain.controller.ListarUf" />
-        <activity android:name="domain.controller.ListarCategoria" />
-        <activity android:name="domain.controller.ListarSubCategoria" />
+        <activity
+            android:name="domain.controller.ListarBairro"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="domain.controller.ListarUsuario"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="domain.controller.ListarUf"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="domain.controller.ListarCategoria"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="domain.controller.ListarSubCategoria"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
         <activity android:name="domain.view.TelaLogin">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -80,14 +104,22 @@
             android:name="domain.fragment.MapaProviderFragment"
             android:label="ExemploProviderFragmentV1" />
 
-        <activity android:name="domain.controller.Configuracoes" />
+        <activity
+            android:name="domain.controller.Configuracoes"
+            android:configChanges="orientation" />
         <activity android:name="domain.view.Relatorios" />
         <activity android:name="domain.controller.RelatorioAvaliacaoPorBairro" />
         <activity android:name="domain.controller.RelatorioDenunciasNaoConcluidas" />
         <activity android:name="domain.controller.RelatorioDenunciasNaoConcluidasBairro" />
         <activity android:name="domain.controller.RelatorioDenunciasConcluidasENaoConcluidas" />
-        <activity android:name="domain.controller.ListarDenuncia" />
-        <activity android:name="domain.controller.InserirDenuncia" />
+        <activity
+            android:name="domain.controller.ListarDenuncia"
+            android:configChanges="orientation" />
+        <activity
+            android:name="domain.controller.InserirDenuncia"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity android:name="domain.controller.MinhasDenuncias"></activity>
     </application>
 
 </manifest>

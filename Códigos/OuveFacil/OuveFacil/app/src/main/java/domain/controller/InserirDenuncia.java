@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -17,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -43,23 +46,29 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import domain.model.Administrador;
 import domain.model.Bairro;
 import domain.model.Categoria;
 import domain.model.Cidade;
+import domain.model.Denuncia;
 import domain.model.UF;
+import domain.util.Image;
 
-public class InserirDenuncia extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener  {
+public class InserirDenuncia extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener  {
 
     private IpServidor ipServidor = new IpServidor();
     private Spinner spinnerBairro;
     private Spinner spinnerCategoria;
     private Spinner spinnerAdministrador;
+    private CheckBox checkBoxAnonimato1;
     private EditText editDescricao;
     private ArrayList<Bairro> arrayListBairro = new ArrayList<Bairro>();
     private ArrayList<Categoria> arrayListCategoria = new ArrayList<Categoria>();
@@ -75,16 +84,26 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
     private String nomeAdministrador;
     private Integer codAdministrador;
     private String cpfCnpjAdministrador;
+    private Integer auxCheckBox;
+    private Denuncia denuncia = new Denuncia();
+    public static Image imagemAux = new Image();
+    public static double auxLatitude;
+    public static double auxLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inserir_denuncia);
 
+
+        //File file = new File(android.os.Environment.getExternalStorageDirectory(), "img.png");
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        //intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
         startActivityForResult(intent, 0);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this).addOnConnectionFailedListener(this).addConnectionCallbacks(this).addApi(LocationServices.API).build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this).addOnConnectionFailedListener(this).
+                addConnectionCallbacks(this).addApi(LocationServices.API).build();
 
         mGoogleApiClient.connect();
     }
@@ -99,9 +118,15 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
                 ImageView imageView = (ImageView) findViewById(R.id.imageView);
                 imageView.setImageBitmap(imagem);
 
+                imagemAux.setBitmap(imagem);
+                imagemAux.setMime("png");
+                denuncia.setImage(imagemAux);
+
+
                 spinnerBairro = (Spinner) findViewById(R.id.spinnerActivityBairro);
                 spinnerCategoria = (Spinner) findViewById(R.id.spinnerActivityCategoria);
                 spinnerAdministrador = (Spinner) findViewById(R.id.spinnerActivityAdministrador);
+                checkBoxAnonimato1 = (CheckBox) findViewById(R.id.checkBoxAnonimato);
 
                 carregaSpinners();
 
@@ -154,10 +179,21 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
                 });
 
                 carregarPosicao();
+
+                auxLatitude = location.getLatitude();
+                auxLongitude = location.getLongitude();
+
                 //Toast.makeText(this, "Latitude: " + location.getLatitude() + "Longitude: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
+                /*File file = null;
+                file = new File(android.os.Environment.getExternalStorageDirectory(), "img.png");
+                if(file != null){
+                    denuncia.getImage().setResizedBitmap(file, 300, 300);
+                    denuncia.getImage().setMimeFromImgPath(file.getPath());
+                    //Toast.makeText(this, "AAAA" , Toast.LENGTH_SHORT).show();
+                }*/
 
             }
-        } else{
+        }else{
             finish();
         }
     }
@@ -175,8 +211,6 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
 
         InserirDenuncia.TaskAdministrador taskAdministrador = new InserirDenuncia.TaskAdministrador();
         taskAdministrador.execute();
-
-
     }
 
     public void enviarDados(View view) {
@@ -184,7 +218,12 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
         new Thread() {
             public void run() {
                 EditText editDesc = (EditText) findViewById(R.id.editTextDescricao);
-                postHttp(codBairro, codCategoria, codAdministrador, editDesc.getText().toString());
+                if(checkBoxAnonimato1.isChecked()){
+                    auxCheckBox = 1;
+                } else {
+                    auxCheckBox = 0;
+                }
+                postHttp(codBairro, codCategoria, codAdministrador, editDesc.getText().toString(), auxCheckBox);
             }
         }.start();
 
@@ -192,13 +231,11 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
         Toast.makeText(this, "Denúncia Inserida", Toast.LENGTH_SHORT).show();
     }
 
-    public void postHttp(Integer codigoBairro, Integer codigoCategoria, Integer codigoAdministrador, String descricao) {
+    public void postHttp(Integer codigoBairro, Integer codigoCategoria, Integer codigoAdministrador, String descricao, Integer anonimato) {
         HttpClient httpClient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(ipServidor.getIpServidor() + "/insertDenuncia.php");
-        //carregarPosicao();
 
         Logado logado = new Logado();
-
 
         try {
             ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
@@ -207,15 +244,15 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
             valores.add(new BasicNameValuePair("codAdministrador", String.valueOf(codigoAdministrador)));
             valores.add(new BasicNameValuePair("codUsuario", String.valueOf(logado.getUsuario().getCodUsuario())));
             valores.add(new BasicNameValuePair("descricao", descricao));
-            valores.add(new BasicNameValuePair("latitude", String.valueOf(location.getLatitude())));
-            valores.add(new BasicNameValuePair("longitude", String.valueOf(location.getLongitude())));
-            valores.add(new BasicNameValuePair("anonimato", String.valueOf(0))); //não é anônimo
+            valores.add(new BasicNameValuePair("latitude", String.valueOf(auxLatitude)));
+            valores.add(new BasicNameValuePair("longitude", String.valueOf(auxLongitude)));
+            valores.add(new BasicNameValuePair("anonimato", String.valueOf(anonimato)));
             valores.add(new BasicNameValuePair("complementoStatus", "Complemento Status")); // complemento status escrito pelo adm
-            valores.add(new BasicNameValuePair("codFotoVideo", String.valueOf(1))); // url da foto
+            valores.add(new BasicNameValuePair("midia1", "/midias/semaforo1.jpg")); // url da foto
             valores.add(new BasicNameValuePair("codStatus", String.valueOf(2))); // pré-setado como Não Concluída
-
-
-            //Toast.makeText(this, "Latitude: " + location.getLatitude() + "Longitude: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
+            valores.add(new BasicNameValuePair("img-mime", denuncia.getImage().getMime())); //formato da imagem
+            valores.add(new BasicNameValuePair("img-image", denuncia.getImage().getBitmapBase64()));
+            //valores.add(new BasicNameValuePair("img-image", imagemAux.getBitmapBase64()));
 
 
             httpPost.setEntity(new UrlEncodedFormEntity(valores));
@@ -233,6 +270,9 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
                     }
                 }
             });
+
+        }catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         } catch (ClientProtocolException e) {
 
         } catch (IOException e) {
