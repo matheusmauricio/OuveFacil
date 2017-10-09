@@ -249,7 +249,7 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
             valores.add(new BasicNameValuePair("anonimato", String.valueOf(anonimato)));
             valores.add(new BasicNameValuePair("complementoStatus", "Complemento Status")); // complemento status escrito pelo adm
             valores.add(new BasicNameValuePair("midia1", "/midias/semaforo1.jpg")); // url da foto
-            valores.add(new BasicNameValuePair("codStatus", String.valueOf(2))); // pré-setado como Não Concluída
+            valores.add(new BasicNameValuePair("codStatus", String.valueOf(6))); // pré-setado como Aguardando Aprovação
             valores.add(new BasicNameValuePair("img-mime", denuncia.getImage().getMime())); //formato da imagem
             valores.add(new BasicNameValuePair("img-image", denuncia.getImage().getBitmapBase64()));
             //valores.add(new BasicNameValuePair("img-image", imagemAux.getBitmapBase64()));

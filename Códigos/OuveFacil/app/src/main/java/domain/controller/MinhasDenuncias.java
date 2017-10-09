@@ -3,6 +3,7 @@ package domain.controller;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -69,7 +70,7 @@ public class MinhasDenuncias extends AppCompatActivity {
     private String nomeAdministrador;
     private String nomeBairro;
     private String nomeCategoria;
-    private String nomeStatus;
+    private static String nomeStatus;
     private String data;
     private String hora;
 
@@ -106,6 +107,7 @@ public class MinhasDenuncias extends AppCompatActivity {
                 mudarActivity(auxLatitude, auxLongitude);
             }
         });
+
 
     }
 
@@ -227,6 +229,8 @@ public class MinhasDenuncias extends AppCompatActivity {
 
                     ArrayAdapter<String> ad = new ArrayAdapter<String>(MinhasDenuncias.this, android.R.layout.simple_list_item_1, param);
                     listView.setAdapter(ad);
+
+
                 }
 
                 this.progressDialog.dismiss();

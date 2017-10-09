@@ -83,6 +83,7 @@ public class TelaLogin extends AppCompatActivity {
 
                 Intent irParaMenu = new Intent(this, MainActivity.class);
                 startActivity(irParaMenu);
+                finish();
             } else {
                 Toast.makeText(TelaLogin.this, "Erro ao conectar. Tente novamente!", Toast.LENGTH_SHORT).show();
             }
