@@ -1,11 +1,12 @@
 <?php
 
 include_once("conexao.php");
+include_once("nomeConexao.php");
 
 if ($_POST) {
   $status = $_POST['status'];
 
-  $query = "SELECT COUNT(*), bairro.nome FROM `bancoOuveFacil`.`denuncia`, `bancoOuveFacil`.`status`, `bancoOuveFacil`.`bairro`
+  $query = "SELECT COUNT(*), bairro.nome FROM `$nomeBanco`.`denuncia`, `$nomeBanco`.`status`, `$nomeBanco`.`bairro`
   WHERE status.nome = '$status' AND status.codStatus = denuncia.codStatus AND denuncia.codBairro = bairro.codBairro
   GROUP BY bairro.nome";
 

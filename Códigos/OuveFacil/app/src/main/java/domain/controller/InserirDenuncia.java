@@ -67,12 +67,10 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
     private IpServidor ipServidor = new IpServidor();
     private Spinner spinnerBairro;
     private Spinner spinnerCategoria;
-    private Spinner spinnerAdministrador;
     private CheckBox checkBoxAnonimato1;
     private EditText editDescricao;
     private ArrayList<Bairro> arrayListBairro = new ArrayList<Bairro>();
     private ArrayList<Categoria> arrayListCategoria = new ArrayList<Categoria>();
-    private ArrayList<Administrador> arrayListAdministrador = new ArrayList<Administrador>();
 
     private GoogleApiClient mGoogleApiClient;
     private Location location;
@@ -125,7 +123,6 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
 
                 spinnerBairro = (Spinner) findViewById(R.id.spinnerActivityBairro);
                 spinnerCategoria = (Spinner) findViewById(R.id.spinnerActivityCategoria);
-                spinnerAdministrador = (Spinner) findViewById(R.id.spinnerActivityAdministrador);
                 checkBoxAnonimato1 = (CheckBox) findViewById(R.id.checkBoxAnonimato);
 
                 carregaSpinners();
@@ -162,21 +159,6 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
                     }
                 });
 
-                spinnerAdministrador.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        Administrador administrador = new Administrador();
-                        administrador = (Administrador) spinnerAdministrador.getItemAtPosition(position);
-
-                        codAdministrador = administrador.getCodAdministrador();
-
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
 
                 carregarPosicao();
 
@@ -209,8 +191,6 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
         InserirDenuncia.TaskCategoria taskCategoria = new InserirDenuncia.TaskCategoria();
         taskCategoria.execute();
 
-        InserirDenuncia.TaskAdministrador taskAdministrador = new InserirDenuncia.TaskAdministrador();
-        taskAdministrador.execute();
     }
 
     public void enviarDados(View view) {
@@ -223,7 +203,7 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
                 } else {
                     auxCheckBox = 0;
                 }
-                postHttp(codBairro, codCategoria, codAdministrador, editDesc.getText().toString(), auxCheckBox);
+                postHttp(codBairro, codCategoria, editDesc.getText().toString(), auxCheckBox);
             }
         }.start();
 
@@ -231,7 +211,7 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
         Toast.makeText(this, "Denúncia Inserida", Toast.LENGTH_SHORT).show();
     }
 
-    public void postHttp(Integer codigoBairro, Integer codigoCategoria, Integer codigoAdministrador, String descricao, Integer anonimato) {
+    public void postHttp(Integer codigoBairro, Integer codigoCategoria, String descricao, Integer anonimato) {
         HttpClient httpClient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(ipServidor.getIpServidor() + "/insertDenuncia.php");
 
@@ -241,7 +221,6 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
             ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
             valores.add(new BasicNameValuePair("codBairro", String.valueOf(codigoBairro)));
             valores.add(new BasicNameValuePair("codCategoria", String.valueOf(codigoCategoria)));
-            valores.add(new BasicNameValuePair("codAdministrador", String.valueOf(codigoAdministrador)));
             valores.add(new BasicNameValuePair("codUsuario", String.valueOf(logado.getUsuario().getCodUsuario())));
             valores.add(new BasicNameValuePair("descricao", descricao));
             valores.add(new BasicNameValuePair("latitude", String.valueOf(auxLatitude)));
@@ -480,100 +459,6 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
 
                     ArrayAdapter<Categoria> ad = new ArrayAdapter<Categoria>(InserirDenuncia.this, android.R.layout.simple_list_item_1, arrayListCategoria);
                     spinnerCategoria.setAdapter(ad);
-                }
-
-                this.progressDialog.dismiss();
-
-            } catch (Exception e) {
-                Log.e("log_tag", "Error parsing data "+e.toString());
-            }
-        }
-    }
-
-    public class TaskAdministrador extends AsyncTask<String, String, Void> {
-
-        private ProgressDialog progressDialog = new ProgressDialog(InserirDenuncia.this);
-
-        InputStream is = null;
-        String result = "";
-
-        protected void onPreExecute() {
-            progressDialog.setMessage("Listando Items...");
-            progressDialog.show();
-            progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    InserirDenuncia.TaskAdministrador.this.cancel(true);
-                }
-            });
-        };
-
-        @Override
-        protected Void doInBackground(String... params) {
-
-            String url = ipServidor.getIpServidor()+"/listarAdministrador.php";
-
-            HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(url);
-
-            ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
-
-            try {
-                httpPost.setEntity(new UrlEncodedFormEntity(param));
-
-                HttpResponse httpResponse = httpClient.execute(httpPost);
-                HttpEntity httpEntity = httpResponse.getEntity();
-
-                // ler o conteudo
-                is = httpEntity.getContent();
-
-            } catch (Exception e) {
-                Log.e("log_tag", "Erro ao conectar com o banco de dados " + e.toString());
-                Toast.makeText(InserirDenuncia.this, "Tente novamente.", Toast.LENGTH_LONG).show();
-            }
-
-            try
-            {
-                BufferedReader br = new BufferedReader(new InputStreamReader(is));
-                StringBuilder sb = new StringBuilder();
-                String line = "";
-
-                while((line = br.readLine()) != null){
-                    sb.append(line+"\n");
-                }
-                is.close();
-                result = sb.toString();
-
-            }catch(Exception e){
-                Log.e("log_tag", "Erro ao converter o resultado " + e.toString());
-            }
-            return null;
-        }
-
-        protected void onPostExecute(Void v){
-
-            try {
-                JSONArray Jarray = new JSONArray(result);
-
-                for (int i = 0; i < Jarray.length(); i++) {
-                    JSONObject jsonObject = null;
-                    jsonObject = Jarray.getJSONObject(i);
-
-                    // output na tela
-                    codAdministrador = jsonObject.getInt("codAdministrador");
-                    nomeAdministrador = jsonObject.getString("nome");
-                    cpfCnpjAdministrador = jsonObject.getString("cpfCnpj");
-
-                    Administrador administrador = new Administrador();
-                    administrador.setCodAdministrador(codAdministrador);
-                    administrador.setNome(nomeAdministrador);
-                    administrador.setCpfCnpj(cpfCnpjAdministrador);
-
-                    arrayListAdministrador.add(administrador);
-
-                    ArrayAdapter<Administrador> ad = new ArrayAdapter<Administrador>(InserirDenuncia.this, android.R.layout.simple_list_item_1, arrayListAdministrador);
-                    spinnerAdministrador.setAdapter(ad);
                 }
 
                 this.progressDialog.dismiss();

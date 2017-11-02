@@ -1,8 +1,9 @@
 <?php
 
   include_once("conexao.php");
+  include_once("nomeConexao.php");
 
-  $query = "SELECT * FROM `bancoOuveFacil`.`administrador`";
+  $query = "SELECT * FROM `$nomeBanco`.`administrador`";
   $queryExec = mysqli_query($con, $query) or die ("Erro: " .mysqli_error($con));
 
   //$linha = mysqli_fetch_object($queryExec);

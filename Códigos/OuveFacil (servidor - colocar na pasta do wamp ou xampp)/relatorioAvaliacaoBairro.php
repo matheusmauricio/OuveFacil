@@ -1,6 +1,7 @@
 <?php
 
   include_once("conexao.php");
+  include_once("nomeConexao.php");
 
 if ($_POST) {
   $status =  $_POST['status'];
@@ -8,7 +9,7 @@ if ($_POST) {
 
 
   $query = "SELECT COUNT(*)
-  FROM `bancoOuveFacil`.`denuncia`, `bancoOuveFacil`.`status`, `bancoOuveFacil`.`bairro`
+  FROM `$nomeBanco`.`denuncia`, `$nomeBanco`.`status`, `$nomeBanco`.`bairro`
   WHERE denuncia.codStatus = status.codStatus AND status.nome = '$status' AND denuncia.codBairro = bairro.codBairro
   AND bairro.nome = '$bairro'";
 

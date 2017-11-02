@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity
             case 200: {
                 if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // executa alguma ação quando o usuário clica em dar a permissão
-                    if(auxPermissao == 1){
+                    if(auxPermissao == 1){//auxPermissao e uma variável private static int (private static int auxPermissao;)
                         showFragment(new MapaProviderFragment(), "MapaProviderFragment");
                     } else{
                         Intent irParaTelaInserirDenuncia = new Intent(this, InserirDenuncia.class);
@@ -117,35 +117,41 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_mapa) {
-            boolean permissionGranted = android.support.v4.app.ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+            boolean permissionGranted = android.support.v4.app.ActivityCompat.checkSelfPermission(this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
 
             if(permissionGranted) {
                 showFragment(new MapaProviderFragment(), "MapaProviderFragment");
             } else {
                 auxPermissao = 1;
-                android.support.v4.app.ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+                android.support.v4.app.ActivityCompat.requestPermissions(this, new String[]{
+                        android.Manifest.permission.ACCESS_FINE_LOCATION }, 200);
             }
 
         } else if (id == R.id.nav_denuncia) {
-            boolean permissionGranted = android.support.v4.app.ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+            boolean permissionGranted = android.support.v4.app.ActivityCompat.checkSelfPermission(this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
 
             if(permissionGranted) {
                 Intent irParaTelaInserirDenuncia = new Intent(this, InserirDenuncia.class);
                 startActivity(irParaTelaInserirDenuncia);
             } else {
                 auxPermissao = 2;
-                android.support.v4.app.ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+                android.support.v4.app.ActivityCompat.requestPermissions(this, new String[]{
+                        android.Manifest.permission.ACCESS_FINE_LOCATION }, 200);
             }
 
         } else if (id == R.id.nav_minhas_denuncias) {
-            boolean permissionGranted = android.support.v4.app.ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+            boolean permissionGranted = android.support.v4.app.ActivityCompat.checkSelfPermission(this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
 
             if(permissionGranted) {
                 Intent irParaTelaMinhasDenuncias = new Intent(this, MinhasDenuncias.class);
                 startActivity(irParaTelaMinhasDenuncias);
             } else {
                 auxPermissao = 2;
-                android.support.v4.app.ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+                android.support.v4.app.ActivityCompat.requestPermissions(this, new String[]{
+                        android.Manifest.permission.ACCESS_FINE_LOCATION}, 200);
             }
 
         } else if (id == R.id.nav_manage) {
@@ -156,6 +162,7 @@ public class MainActivity extends AppCompatActivity
             irPaginaInternet.setData(localSite);
 
             startActivity(irPaginaInternet);
+
         } else if (id == R.id.nav_cadastros) {
             Intent irParaTelaCadastros = new Intent(this, Cadastros.class);
             startActivity(irParaTelaCadastros);

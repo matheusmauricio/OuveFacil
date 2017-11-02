@@ -1,8 +1,9 @@
 <?php
 
   include_once("conexao.php");
+  include_once("nomeConexao.php");
 
-  $query = "SELECT * FROM `bancoOuveFacil`.`subcategoria`";
+  $query = "SELECT * FROM `$nomeBanco`.`subcategoria`";
   $queryExec = mysqli_query($con, $query) or die ("Erro: " .mysqli_error($con));
 
 

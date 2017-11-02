@@ -1,0 +1,30 @@
+<?php
+  include_once("conexao.php");
+  include_once("nomeConexao.php");
+
+  if(isset($_GET['codigo'])){
+     $codDenuncia = $_GET['codigo'];
+  }
+
+  $query = "SELECT denuncia.codDenuncia, denuncia.descricao, denuncia.latitude, denuncia.longitude, denuncia.anonimato,
+  denuncia.complementoStatus, denuncia.codBairro, denuncia.codCategoria, denuncia.codUsuario, denuncia.codAdministrador,
+  denuncia.midia1, denuncia.midia2, denuncia.midia3, denuncia.midia4, denuncia.codStatus, usuario.nome as
+  nomeUsuario, administrador.nome as nomeAdministrador, bairro.nome as nomeBairro, categoria.nome as nomeCategoria,
+  status.nome as nomeStatus, denuncia.hora, DATE_FORMAT(denuncia.data, '%d/%m/%Y') as data, denuncia.existe,
+  denuncia.naoExiste, usuario.codUsuario as codUsuario
+  FROM `$nomeBanco`.`denuncia`, `$nomeBanco`.`usuario`, `$nomeBanco`.`administrador`, `$nomeBanco`.`bairro`,
+`$nomeBanco`.`categoria`, `$nomeBanco`.`status`
+  WHERE denuncia.codDenuncia = '$codDenuncia' AND denuncia.codUsuario = usuario.codUsuario
+  AND denuncia.codAdministrador = administrador.codAdministrador AND denuncia.codBairro = bairro.codBairro
+  AND denuncia.codCategoria = categoria.codCategoria AND denuncia.codStatus = status.codStatus";
+
+  $queryExec = mysqli_query($con, $query) or die ("Erro: " .mysqli_error($con));
+
+  while ($linha = mysqli_fetch_assoc($queryExec)) {
+    $output[] = $linha;
+  }
+
+
+  //print json_encode($output);
+
+?>

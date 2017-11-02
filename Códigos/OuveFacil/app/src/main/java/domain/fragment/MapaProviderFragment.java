@@ -131,6 +131,12 @@ public class MapaProviderFragment extends SupportMapFragment implements OnMapRea
         MapaProviderFragment.Task task = new MapaProviderFragment.Task();
         task.execute();
 
+        //espera 2 segundos (pra dar tempo dos marcadores serem carregados e listados no mapa)
+        try {
+            new Thread().sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         carregarInformacoes(googleMapAux);
         
     }

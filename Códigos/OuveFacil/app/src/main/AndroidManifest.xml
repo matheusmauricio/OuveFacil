@@ -114,12 +114,16 @@
         <activity android:name="domain.controller.RelatorioDenunciasConcluidasENaoConcluidas" />
         <activity
             android:name="domain.controller.ListarDenuncia"
-            android:configChanges="orientation" />
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
         <activity
             android:name="domain.controller.InserirDenuncia"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
-        <activity android:name="domain.controller.MinhasDenuncias"></activity>
+
+        <activity android:name="domain.controller.MinhasDenuncias"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

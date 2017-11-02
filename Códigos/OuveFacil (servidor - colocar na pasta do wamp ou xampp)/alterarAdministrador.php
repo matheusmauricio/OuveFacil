@@ -1,6 +1,7 @@
 <?php
 
 include_once("conexao.php");
+include_once("nomeConexao.php");
 
     if ($_POST) {
         $codAdministrador = $_POST['codAdministrador'];
@@ -10,7 +11,7 @@ include_once("conexao.php");
         $cpfCnpj = $_POST['cpfCnpj'];
 
 
-        $query = "UPDATE `bancoOuveFacil`.`administrador` SET `nome` = '$nome', `login` = '$login', `senha` = '$senha', `cpfCnpj` = '$cpfCnpj' WHERE `codAdministrador` = '$codAdministrador'";
+        $query = "UPDATE `$nomeBanco`.`administrador` SET `nome` = '$nome', `login` = '$login', `senha` = '$senha', `cpfCnpj` = '$cpfCnpj' WHERE `codAdministrador` = '$codAdministrador'";
 
         $queryExec = mysqli_query($con, $query) or die ("Erro: " .mysqli_error($con));
 

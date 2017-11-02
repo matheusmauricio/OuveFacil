@@ -12,9 +12,11 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -100,6 +102,8 @@ public class ListarDenuncia extends AppCompatActivity {
     private ImageView imageView;
     private Button buttonExiste;
     private Button buttonNaoExiste;
+    private AlertDialog alerta;
+    private ImageView imageView2;
 
     private android.os.Handler handler = new android.os.Handler();
     public static String auxUrl;
@@ -178,6 +182,27 @@ public class ListarDenuncia extends AppCompatActivity {
         }
     }
 
+    public void expandirImagem(Bitmap imgAux){
+        LayoutInflater li = getLayoutInflater();
+
+        View view = li.inflate(R.layout.alerta_imagem, null);
+
+        imageView2 = (ImageView) view.findViewById(R.id.imageViewActivity2);
+        imageView2.setImageBitmap(imgAux);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(view);
+        alerta = builder.create();
+        alerta.show();
+
+        imageView2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                alerta.dismiss(); //desfaz o alerta
+            }
+        });
+
+    }
+
     public void carregarImagem(){
         new Thread(){
             public void run(){
@@ -199,6 +224,11 @@ public class ListarDenuncia extends AppCompatActivity {
 
                         imageView = (ImageView) findViewById(R.id.imageViewActivity);
                         imageView.setImageBitmap(imgAux);
+                        imageView.setOnClickListener(new View.OnClickListener() {
+                            public void onClick(View v){
+                                expandirImagem(imgAux);
+                            }
+                        });
                     }
                 });
             }
@@ -253,6 +283,14 @@ public class ListarDenuncia extends AppCompatActivity {
         String result = "";
 
         protected void onPreExecute() {
+            Runnable progressRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    progressDialog.cancel();
+                }
+            };
+            handler.postDelayed(progressRunnable, 8000);
+
             progressDialog.setMessage("Listando Items...");
             progressDialog.show();
             progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -507,8 +545,7 @@ public class ListarDenuncia extends AppCompatActivity {
                     progressDialog.cancel();
                 }
             };
-
-            handler.postDelayed(progressRunnable, 4000);
+            handler.postDelayed(progressRunnable, 8000);
 
             progressDialog.setMessage("Listando Items...");
             progressDialog.show();
