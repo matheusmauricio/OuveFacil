@@ -6,7 +6,9 @@
   date_default_timezone_set('America/Sao_Paulo');
 
     if ($_POST) {
-      $codBairro = $_POST['codBairro'];
+      //$codBairro = $_POST['codBairro'];
+      $bairro = $_POST['bairro'];
+      $endereco = $_POST['endereco'];
       $codCategoria = $_POST['codCategoria'];
       $codAdministrador = "2"; //código do Administrador padrão
       $codUsuario = $_POST['codUsuario'];
@@ -27,8 +29,8 @@
 
 
       $query = "INSERT INTO `$nomeBanco`.`denuncia` VALUES('', '$descricao', '$latitude', '$longitude',
-        '$anonimato', '$complementoStatus', '$codBairro', '$codCategoria', '$codUsuario', '$codAdministrador',
-        '$codStatus', '$data', '$hora', '/$imgName', NULL, NULL, NULL, 0, 0)";
+        '$anonimato', '$complementoStatus', NULL, '$codCategoria', '$codUsuario', '$codAdministrador',
+        '$codStatus', '$data', '$hora', '/$imgName', NULL, NULL, NULL, 0, 0, '$bairro', '$endereco')";
       $queryExec = mysqli_query($con, $query) or die ("Erro: " .mysqli_error($con));
 
       //inserção da imagem
