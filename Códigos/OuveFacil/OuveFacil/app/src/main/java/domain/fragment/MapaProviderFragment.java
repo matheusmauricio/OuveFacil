@@ -378,7 +378,6 @@ public class MapaProviderFragment extends SupportMapFragment implements OnMapRea
                     complementoStatus = jsonObject.getString("complementoStatus");
                     nomeUsuario = jsonObject.getString("nomeUsuario");
                     nomeAdministrador = jsonObject.getString("nomeAdministrador");
-                    nomeBairro = jsonObject.getString("nomeBairro");
                     nomeCategoria = jsonObject.getString("nomeCategoria");
                     nomeStatus = jsonObject.getString("nomeStatus");
                     midia1 = jsonObject.getString("midia1");
@@ -394,8 +393,8 @@ public class MapaProviderFragment extends SupportMapFragment implements OnMapRea
                     domain.model.Status status = new domain.model.Status();
                     status.setNome(nomeStatus);
 
-                    Bairro bairro = new Bairro();
-                    bairro.setNome(nomeBairro);
+                    /*Bairro bairro = new Bairro();
+                    bairro.setNome(nomeBairro);*/
 
                     Administrador administrador = new Administrador();
                     administrador.setNome(nomeAdministrador);
@@ -417,7 +416,7 @@ public class MapaProviderFragment extends SupportMapFragment implements OnMapRea
                     denuncia.setNaoExiste(naoExiste);
                     denuncia.setUsuario(usuario);
                     denuncia.setAdministrador(administrador);
-                    denuncia.setBairro(bairro);
+                    //denuncia.setBairro(bairro);
                     denuncia.setCategoria(categoria);
                     denuncia.setStatus(status);
 

@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import domain.controller.InserirUsuario;
 import domain.controller.IpServidor;
 import domain.controller.Logado;
 import domain.model.Usuario;
@@ -95,8 +96,11 @@ public class TelaLogin extends AppCompatActivity {
     }
 
     public void cadastrar(View view) {
-        Intent irParaMenu = new Intent(this, MainActivity.class);
-        startActivity(irParaMenu);
+        /*Intent irParaMenu = new Intent(this, MainActivity.class);
+        startActivity(irParaMenu);*/
+
+        Intent irParaMenuCadastrar = new Intent(this, InserirUsuario.class);
+        startActivity(irParaMenuCadastrar);
     }
 
     public class Task extends AsyncTask<String, String, Void> {

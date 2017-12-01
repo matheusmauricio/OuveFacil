@@ -199,7 +199,6 @@ public class MinhasDenuncias extends AppCompatActivity {
                     complementoStatus = jsonObject.getString("complementoStatus");
                     nomeUsuario = jsonObject.getString("nomeUsuario");
                     nomeAdministrador = jsonObject.getString("nomeAdministrador");
-                    nomeBairro = jsonObject.getString("nomeBairro");
                     nomeCategoria = jsonObject.getString("nomeCategoria");
                     nomeStatus = jsonObject.getString("nomeStatus");
                     data = jsonObject.getString("data");
@@ -214,6 +213,7 @@ public class MinhasDenuncias extends AppCompatActivity {
 
                     pegaEndereco(latitude, longitude);
                     String auxNumero;
+                    String auxBairro;
 
                     if(endereco.getSubThoroughfare() == null){
                         auxNumero = ", s/nº";
@@ -221,9 +221,15 @@ public class MinhasDenuncias extends AppCompatActivity {
                         auxNumero = ", nº " + endereco.getSubThoroughfare();
                     }
 
+                    if(endereco.getSubLocality() == null){
+                        auxBairro = "Nome indisponível";
+                    } else{
+                        auxBairro = endereco.getSubLocality();
+                    }
+
                     param.add("Código da Denúncia: " + codDenuncia + "\nCategoria: " + nomeCategoria + "\nDescrição: " + descricao
                             + "\nStatus: " + nomeStatus + "\nData: " + data + "\nHora: " + hora + "\nEndereço: " +
-                            endereco.getThoroughfare()+ auxNumero + "\nBairro: " + nomeBairro + "\nLatitude: " + latitude
+                            endereco.getThoroughfare()+ auxNumero + "\nBairro: " + auxBairro + "\nLatitude: " + latitude
                             + "\nLongitude: " + longitude + "\nAdministrador Responsável: " + nomeAdministrador +
                             "\nObservação do Administrador: " + complementoStatus);
 

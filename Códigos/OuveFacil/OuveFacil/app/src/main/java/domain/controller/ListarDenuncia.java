@@ -365,7 +365,6 @@ public class ListarDenuncia extends AppCompatActivity {
                     complementoStatus = jsonObject.getString("complementoStatus");
                     nomeUsuario = jsonObject.getString("nomeUsuario");
                     nomeAdministrador = jsonObject.getString("nomeAdministrador");
-                    nomeBairro = jsonObject.getString("nomeBairro");
                     nomeCategoria = jsonObject.getString("nomeCategoria");
                     nomeStatus = jsonObject.getString("nomeStatus");
                     midia1 = jsonObject.getString("midia1");
@@ -442,7 +441,7 @@ public class ListarDenuncia extends AppCompatActivity {
             ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
             valores.add(new BasicNameValuePair("codDenuncia", String.valueOf(codDenuncia)));
             valores.add(new BasicNameValuePair("codUsuario", String.valueOf(logado.getUsuario().getCodUsuario())));
-            valores.add(new BasicNameValuePair("colaboracao", "Existe"));
+            //valores.add(new BasicNameValuePair("colaboracao", "Existe"));
 
             httpPost.setEntity(new UrlEncodedFormEntity(valores));
             final HttpResponse resposta = httpClient.execute(httpPost);
@@ -474,7 +473,7 @@ public class ListarDenuncia extends AppCompatActivity {
             ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
             valores.add(new BasicNameValuePair("codDenuncia", String.valueOf(codDenuncia)));
             valores.add(new BasicNameValuePair("codUsuario", String.valueOf(logado.getUsuario().getCodUsuario())));
-            valores.add(new BasicNameValuePair("colaboracao", "Não Existe"));
+            //valores.add(new BasicNameValuePair("colaboracao", "Não Existe"));
 
             httpPost.setEntity(new UrlEncodedFormEntity(valores));
             final HttpResponse resposta = httpClient.execute(httpPost);

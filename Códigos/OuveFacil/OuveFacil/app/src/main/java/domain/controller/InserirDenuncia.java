@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -52,6 +54,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.List;
 
 import domain.model.Administrador;
 import domain.model.Bairro;
@@ -65,7 +68,6 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
         GoogleApiClient.OnConnectionFailedListener  {
 
     private IpServidor ipServidor = new IpServidor();
-    private Spinner spinnerBairro;
     private Spinner spinnerCategoria;
     private CheckBox checkBoxAnonimato1;
     private EditText editDescricao;
@@ -74,6 +76,7 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
 
     private GoogleApiClient mGoogleApiClient;
     private Location location;
+    private Address endereco;
 
     private String nomeBairro;
     private Integer codBairro;
@@ -121,27 +124,10 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
                 denuncia.setImage(imagemAux);
 
 
-                spinnerBairro = (Spinner) findViewById(R.id.spinnerActivityBairro);
                 spinnerCategoria = (Spinner) findViewById(R.id.spinnerActivityCategoria);
                 checkBoxAnonimato1 = (CheckBox) findViewById(R.id.checkBoxAnonimato);
 
                 carregaSpinners();
-
-                spinnerBairro.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        Bairro bairro = new Bairro();
-                        bairro = (Bairro) spinnerBairro.getItemAtPosition(position);
-
-                        codBairro = bairro.getCodBairro();
-
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
 
                 spinnerCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -185,12 +171,26 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
     }
 
     public void carregaSpinners() {
-        InserirDenuncia.TaskBairro taskBairro = new InserirDenuncia.TaskBairro();
-        taskBairro.execute();
-
         InserirDenuncia.TaskCategoria taskCategoria = new InserirDenuncia.TaskCategoria();
         taskCategoria.execute();
 
+    }
+
+    public void pegaEndereco(){
+        Geocoder geocoder;
+        List<Address> addresses;
+
+        geocoder = new Geocoder(getApplicationContext());
+
+
+        try{
+            addresses = geocoder.getFromLocation(auxLatitude, auxLongitude, 1);
+            if (addresses.size() > 0){
+                endereco = addresses.get(0);
+            }
+        }catch (IOException e){
+
+        }
     }
 
     public void enviarDados(View view) {
@@ -203,7 +203,7 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
                 } else {
                     auxCheckBox = 0;
                 }
-                postHttp(codBairro, codCategoria, editDesc.getText().toString(), auxCheckBox);
+                postHttp(codCategoria, editDesc.getText().toString(), auxCheckBox);
             }
         }.start();
 
@@ -211,15 +211,38 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
         Toast.makeText(this, "Denúncia Inserida", Toast.LENGTH_SHORT).show();
     }
 
-    public void postHttp(Integer codigoBairro, Integer codigoCategoria, String descricao, Integer anonimato) {
+    public void postHttp(Integer codigoCategoria, String descricao, Integer anonimato) {
         HttpClient httpClient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(ipServidor.getIpServidor() + "/insertDenuncia.php");
 
         Logado logado = new Logado();
 
+        pegaEndereco();
+
+        String auxBairro;
+        String auxNumero;
+        String enderecoCompleto;
+
+        if(endereco.getSubLocality() == null){
+            auxBairro = "Nome indisponível";
+        } else{
+            auxBairro = endereco.getSubLocality();
+        }
+
+        if(endereco.getSubThoroughfare() == null){
+            auxNumero = ", s/nº";
+        } else{
+            auxNumero = ", nº " + endereco.getSubThoroughfare();
+        }
+
+        enderecoCompleto = endereco.getThoroughfare()+ auxNumero;
+        //Toast.makeText(InserirDenuncia.this, "end: " + enderecoCompleto + ", bairro " + auxBairro, Toast.LENGTH_LONG).show();
+
         try {
             ArrayList<NameValuePair> valores = new ArrayList<NameValuePair>();
-            valores.add(new BasicNameValuePair("codBairro", String.valueOf(codigoBairro)));
+            //valores.add(new BasicNameValuePair("codBairro", String.valueOf(codigoBairro)));
+            valores.add(new BasicNameValuePair("bairro", auxBairro));
+            valores.add(new BasicNameValuePair("endereco", enderecoCompleto));
             valores.add(new BasicNameValuePair("codCategoria", String.valueOf(codigoCategoria)));
             valores.add(new BasicNameValuePair("codUsuario", String.valueOf(logado.getUsuario().getCodUsuario())));
             valores.add(new BasicNameValuePair("descricao", descricao));
@@ -285,97 +308,6 @@ public class InserirDenuncia extends AppCompatActivity implements GoogleApiClien
 
     }
 
-    public class TaskBairro extends AsyncTask<String, String, Void> {
-
-        private ProgressDialog progressDialog = new ProgressDialog(InserirDenuncia.this);
-
-        InputStream is = null;
-        String result = "";
-
-        protected void onPreExecute() {
-            progressDialog.setMessage("Listando Items...");
-            progressDialog.show();
-            progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    InserirDenuncia.TaskBairro.this.cancel(true);
-                }
-            });
-        };
-
-        @Override
-        protected Void doInBackground(String... params) {
-
-            String url = ipServidor.getIpServidor()+"/listarBairro.php";
-
-            HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(url);
-
-            ArrayList<NameValuePair> param = new ArrayList<NameValuePair>();
-
-            try {
-                httpPost.setEntity(new UrlEncodedFormEntity(param));
-
-                HttpResponse httpResponse = httpClient.execute(httpPost);
-                HttpEntity httpEntity = httpResponse.getEntity();
-
-                // ler o conteudo
-                is = httpEntity.getContent();
-
-            } catch (Exception e) {
-                Log.e("log_tag", "Erro ao conectar com o banco de dados " + e.toString());
-                Toast.makeText(InserirDenuncia.this, "Tente novamente.", Toast.LENGTH_LONG).show();
-            }
-
-            try
-            {
-                BufferedReader br = new BufferedReader(new InputStreamReader(is));
-                StringBuilder sb = new StringBuilder();
-                String line = "";
-
-                while((line = br.readLine()) != null){
-                    sb.append(line+"\n");
-                }
-                is.close();
-                result = sb.toString();
-
-            }catch(Exception e){
-                Log.e("log_tag", "Erro ao converter o resultado " + e.toString());
-            }
-            return null;
-        }
-
-        protected void onPostExecute(Void v){
-
-            try {
-                JSONArray Jarray = new JSONArray(result);
-
-                for (int i = 0; i < Jarray.length(); i++) {
-                    JSONObject jsonObject = null;
-                    jsonObject = Jarray.getJSONObject(i);
-
-                    // output na tela
-                    codBairro = jsonObject.getInt("codBairro");
-                    nomeBairro = jsonObject.getString("nomeBairro");
-
-                    Bairro bairro = new Bairro();
-                    bairro.setCodBairro(codBairro);
-                    bairro.setNome(nomeBairro);
-
-                    arrayListBairro.add(bairro);
-
-                    ArrayAdapter<Bairro> ad = new ArrayAdapter<Bairro>(InserirDenuncia.this, android.R.layout.simple_list_item_1, arrayListBairro);
-                    spinnerBairro.setAdapter(ad);
-                }
-
-                this.progressDialog.dismiss();
-
-            } catch (Exception e) {
-                Log.e("log_tag", "Error parsing data "+e.toString());
-            }
-        }
-    }
 
     public class TaskCategoria extends AsyncTask<String, String, Void> {
 

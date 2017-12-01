@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity
                         android.Manifest.permission.ACCESS_FINE_LOCATION}, 200);
             }
 
-        } else if (id == R.id.nav_manage) {
+        } /*else if (id == R.id.nav_manage) {
             Intent irPaginaInternet = new Intent(Intent.ACTION_VIEW);
 
             Uri localSite = Uri.parse("http://google.com.br");
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_relatorios) {
             Intent irParaTelaRelatorios = new Intent(this, Relatorios.class);
             startActivity(irParaTelaRelatorios);
-        }
+        }*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

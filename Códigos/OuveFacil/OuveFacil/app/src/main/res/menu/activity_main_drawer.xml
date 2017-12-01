@@ -16,13 +16,13 @@
             android:icon="@drawable/ic_folder_black_24dp"
             android:title="Minhas Denúncias" />
 
-        <item
+        <!-- <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="Tools" /> -->
 
     </group>
-
+<!--
     <item android:title="Communicate">
         <menu>
             <item
@@ -35,5 +35,5 @@
                 android:title="Relatórios" />
         </menu>
     </item>
-
+-->
 </menu>
