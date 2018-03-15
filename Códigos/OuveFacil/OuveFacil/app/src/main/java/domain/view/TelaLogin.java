@@ -202,7 +202,9 @@ public class TelaLogin extends AppCompatActivity {
                 }
                 this.progressDialog.dismiss();
             } catch (Exception e) {
-                Log.e("log_tag", "Error parsing data " + e.toString());
+                Toast.makeText(getBaseContext(), "Login ou senha Incorretos", Toast.LENGTH_LONG).show();
+                Log.e("log_tag", "Error parsing data "+e.toString());
+                this.progressDialog.dismiss();
             }
 
 

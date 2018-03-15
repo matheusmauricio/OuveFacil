@@ -46,6 +46,7 @@ public class InserirBairro extends AppCompatActivity {
     private Spinner spinnerCidade;
     private Integer codCid;
     private IpServidor ipServidor = new IpServidor();
+    private android.os.Handler handler = new android.os.Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +92,16 @@ public class InserirBairro extends AppCompatActivity {
         String result = "";
 
         protected void onPreExecute() {
-            progressDialog.setMessage("Listando Items...");
+            Runnable progressRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    progressDialog.cancel();
+                }
+            };
+            handler.postDelayed(progressRunnable, 8000);
+
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setMessage("Listando Itens...");
             progressDialog.show();
             progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 
@@ -171,7 +181,10 @@ public class InserirBairro extends AppCompatActivity {
                 this.progressDialog.dismiss();
 
             } catch (Exception e) {
+                Toast.makeText(getBaseContext(), "Falha ao carregar, por favor tente novamente mais tarde", Toast.LENGTH_LONG).show();
                 Log.e("log_tag", "Error parsing data "+e.toString());
+                this.progressDialog.dismiss();
+                finish();
             }
         }
 

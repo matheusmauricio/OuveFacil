@@ -50,6 +50,7 @@ public class RelatorioDenunciasNaoConcluidasBairro extends AppCompatActivity {
     private ArrayList<String> arrayBairro = new ArrayList<String>();
     private String aux;
     private String aux2;
+    private android.os.Handler handler = new android.os.Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +123,16 @@ public class RelatorioDenunciasNaoConcluidasBairro extends AppCompatActivity {
         String result = "";
 
         protected void onPreExecute() {
-            progressDialog.setMessage("Listando Items...");
+            Runnable progressRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    progressDialog.cancel();
+                }
+            };
+            handler.postDelayed(progressRunnable, 8000);
+
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setMessage("Listando Itens...");
             progressDialog.show();
             progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 
@@ -201,7 +211,10 @@ public class RelatorioDenunciasNaoConcluidasBairro extends AppCompatActivity {
                 this.progressDialog.dismiss();
 
             } catch (Exception e) {
+                Toast.makeText(getBaseContext(), "Falha ao carregar, por favor tente novamente mais tarde", Toast.LENGTH_LONG).show();
                 Log.e("log_tag", "Error parsing data "+e.toString());
+                this.progressDialog.dismiss();
+                finish();
             }
         }
     }
@@ -214,7 +227,16 @@ public class RelatorioDenunciasNaoConcluidasBairro extends AppCompatActivity {
         String result = "";
 
         protected void onPreExecute() {
-            progressDialog.setMessage("Listando Items...");
+            Runnable progressRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    progressDialog.cancel();
+                }
+            };
+            handler.postDelayed(progressRunnable, 8000);
+
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setMessage("Listando Itens...");
             progressDialog.show();
             progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 
@@ -297,7 +319,10 @@ public class RelatorioDenunciasNaoConcluidasBairro extends AppCompatActivity {
                 this.progressDialog.dismiss();
 
             } catch (Exception e) {
+                Toast.makeText(getBaseContext(), "Falha ao carregar, por favor tente novamente mais tarde", Toast.LENGTH_LONG).show();
                 Log.e("log_tag", "Error parsing data "+e.toString());
+                this.progressDialog.dismiss();
+                finish();
             }
         }
 

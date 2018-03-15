@@ -100,6 +100,7 @@ public class MapaProviderFragment extends SupportMapFragment implements OnMapRea
     public static ArrayList<Denuncia> param = new ArrayList<Denuncia>();
     public static double auxCodDenuncia;
     private SharedPreferences sharedPreferences;
+    private android.os.Handler handler = new android.os.Handler();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -304,8 +305,16 @@ public class MapaProviderFragment extends SupportMapFragment implements OnMapRea
         String result = "";
 
         protected void onPreExecute() {
+            Runnable progressRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    progressDialog.cancel();
+                }
+            };
+            handler.postDelayed(progressRunnable, 8000);
 
-            progressDialog.setMessage("Listando Items...");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setMessage("Listando Itens...");
             progressDialog.show();
             progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 
@@ -435,7 +444,9 @@ public class MapaProviderFragment extends SupportMapFragment implements OnMapRea
                 this.progressDialog.dismiss();
 
             } catch (Exception e) {
+                Toast.makeText(getContext(), "Falha ao carregar, por favor tente novamente mais tarde", Toast.LENGTH_LONG).show();
                 Log.e("log_tag", "Error parsing data "+e.toString());
+                this.progressDialog.dismiss();
             }
         }
 
